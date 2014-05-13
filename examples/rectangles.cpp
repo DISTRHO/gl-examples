@@ -27,7 +27,7 @@
 using namespace DGL;
 
 // ------------------------------------------------------
-// Geometry
+// our widget
 
 class RectanglesWidget : public Widget
 {

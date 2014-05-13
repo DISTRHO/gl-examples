@@ -27,21 +27,55 @@
 using namespace DGL;
 
 // ------------------------------------------------------
+// our widget
+
+class DummyWidget : public Widget
+{
+public:
+    DummyWidget(Window& win)
+        : Widget(win)
+    {
+        l1.setStartPos(5, 5);
+        l2.setStartPos(5, 5+50);
+        l3.setStartPos(5, 5+100);
+
+        l1.setEndPos(300-5, 5);
+        l2.setEndPos(300-5, 5+50);
+        l3.setEndPos(300-5, 5+100);
+    }
+
+protected:
+    void onDisplay() override
+    {
+        glColor3f(0.3f, 0.5f, 0.8f);
+        l1.draw();
+
+        glColor3f(0.5f, 0.8f, 0.3f);
+        l2.draw();
+
+        glColor3f(0.8f, 0.3f, 0.5f);
+        l3.draw();
+    }
+
+    Line<int> l1, l2, l3;
+};
+
+// ------------------------------------------------------
 // Our Demo Window
 
 class DemoWindow : public Window
 {
 public:
     DemoWindow(App& app)
-        : Window(app)//,
-          //w1(*this)
+        : Window(app),
+          w1(*this)
     {
         setSize(300, 300);
         setTitle("DGL Demo");
     }
 
-//private:
-    //Widget_Geometry w1;
+private:
+    DummyWidget w1;
 };
 
 // ------------------------------------------------------

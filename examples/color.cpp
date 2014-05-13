@@ -27,7 +27,7 @@
 using namespace DGL;
 
 // ------------------------------------------------------
-// Single color widget
+// our widget
 
 class ColorWidget : public Widget,
                     public IdleCallback
