@@ -35,29 +35,45 @@ public:
     DummyWidget(Window& win)
         : Widget(win)
     {
-        l1.setStartPos(5, 5);
-        l2.setStartPos(5, 5+50);
-        l3.setStartPos(5, 5+100);
-
-        l1.setEndPos(300-5, 5);
-        l2.setEndPos(300-5, 5+50);
-        l3.setEndPos(300-5, 5+100);
     }
 
 protected:
     void onDisplay() override
     {
-        glColor3f(0.3f, 0.5f, 0.8f);
-        l1.draw();
+        glColor3f(0.302f, 0.337f, 0.361f);
+        bgFull.draw();
 
-        glColor3f(0.5f, 0.8f, 0.3f);
-        l2.draw();
+        glColor3f(0.235f, 0.271f, 0.294f);
+        bgSmall.draw();
 
-        glColor3f(0.8f, 0.3f, 0.5f);
-        l3.draw();
+        glColor3f(0.176f, 0.212f, 0.235f);
+        bgSmall.drawOutline();
+
+        glColor3f(0.302f*2, 0.337f*2, 0.361f*2);
+        tri.draw();
     }
 
-    Line<int> l1, l2, l3;
+    void onReshape(int width, int height)
+    {
+        // full bg
+        bgFull = DGL::Rectangle<int>(0, 0, width, height);
+
+        // small bg
+        bgSmall = DGL::Rectangle<int>(20, 10, width-40, height-20);
+
+        // center triangle
+        tri = Triangle<int>(width*0.5, height*0.1, width*0.1, height*0.9, width*0.9, height*0.9);
+
+        // make widget same size as window
+        setSize(width, height);
+
+        // default reshape implementation
+        Widget::onReshape(width, height);
+    }
+
+private:
+    Rectangle<int> bgFull, bgSmall;
+    Triangle<int> tri;
 };
 
 // ------------------------------------------------------
