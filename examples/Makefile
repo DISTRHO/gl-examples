@@ -14,9 +14,9 @@ LINK_FLAGS      += -L../dpf -ldgl $(DGL_LIBS)
 # --------------------------------------------------------------
 
 ifeq ($(WIN32),true)
-TARGETS = app.exe color.exe images.exe
+TARGETS = app.exe color.exe demo.exe images.exe
 else
-TARGETS = app     color     images
+TARGETS = app color demo images
 endif
 
 # --------------------------------------------------------------
@@ -46,6 +46,9 @@ app: app.cpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
 color: color.cpp ../dpf/dgl/*
+	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
+
+demo: demo.cpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
 images: images.cpp images_src/* ../dpf/dgl/*
