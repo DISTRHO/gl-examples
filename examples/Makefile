@@ -25,7 +25,6 @@ all: ../libdgl.a $(TARGETS)
 build: $(TARGETS)
 
 clean:
-	$(MAKE) -C ../dgl clean
 	$(RM) $(TARGETS)
 
 debug:

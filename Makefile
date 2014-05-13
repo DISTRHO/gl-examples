@@ -18,7 +18,7 @@ examples: libs
 
 clean:
 	$(MAKE) clean -C dpf/dgl
-	$(MAKE) clean -C dpf/examples
+	$(MAKE) clean -C examples
 
 # --------------------------------------------------------------
 

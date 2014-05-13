@@ -17,7 +17,7 @@
 // ------------------------------------------------------
 // Pics
 
-#include "dgl-images_src/CatPics.cpp"
+#include "images_src/CatPics.cpp"
 
 // ------------------------------------------------------
 // DGL Stuff
