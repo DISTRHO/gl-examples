@@ -33,14 +33,15 @@ class DemoWindow : public Window
 {
 public:
     DemoWindow(App& app)
-        : Window(app)
+        : Window(app)//,
+          //w1(*this)
     {
         setSize(300, 300);
         setTitle("DGL Demo");
     }
 
-private:
-    // here
+//private:
+    //Widget_Geometry w1;
 };
 
 // ------------------------------------------------------
