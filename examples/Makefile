@@ -11,11 +11,12 @@ include ../dpf/dgl/Makefile.mk
 BUILD_CXX_FLAGS += -I../dpf/dgl
 LINK_FLAGS      += -L../dpf -ldgl $(DGL_LIBS)
 
+WINDRES ?= windres
+
 # --------------------------------------------------------------
 
 ifeq ($(WIN32),true)
 TARGETS = app.exe color.exe demo.exe images.exe rectangles.exe
-LINK_FLAGS += -mwindows
 else
 TARGETS = app color demo images rectangles
 endif
@@ -26,17 +27,12 @@ all: ../libdgl.a $(TARGETS)
 build: $(TARGETS)
 
 clean:
-	$(RM) $(TARGETS)
+	rm -f $(TARGETS) win32/distrho.o
 
 debug:
 	$(MAKE) DEBUG=true
 
 # --------------------------------------------------------------
-
-%.exe: %
-	rm -f $*.exe
-	mv $* $*.exe
-	ln -sf $*.exe $*
 
 ../libdgl.a: .FORCE
 	$(MAKE) -C ../dpf/dgl
@@ -65,6 +61,14 @@ cairo: cairo.cpp ../dgl/*
 
 text: text.cpp ../dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
+
+# --------------------------------------------------------------
+
+%.exe: %.cpp win32/distrho.o
+	$(CXX) $^ $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -mwindows -o $@
+
+win32/distrho.o: win32/distrho.rc
+	$(WINDRES) -i $< -o $@ -O coff
 
 # --------------------------------------------------------------
 
