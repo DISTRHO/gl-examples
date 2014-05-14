@@ -28,33 +28,6 @@
 
 using namespace DGL;
 
-// taken from http://slabode.exofire.net/circle_draw.shtml
-template<typename T>
-void drawCircle(const Point<T>& fPos, const T& fSize, const int fNumSegments, const bool isOutline)
-{
-    // precalculate the sine and cosine
-    const float fTheta = 2.0f * 3.1415926f / float(fNumSegments);
-    const float fCos = std::cos(fTheta);
-    const float fSin = std::sin(fTheta);
-
-    // paint
-    float t, x = fSize, y = 0;
-
-    glBegin(isOutline ? GL_LINE_LOOP : GL_POLYGON);
-
-    for (int i=0; i<fNumSegments; ++i)
-    {
-        // output vertex
-        glVertex2f(x + fPos.getX(), y + fPos.getY());
-
-        // apply the rotation matrix
-        t = x;
-        x = fCos * x - fSin * y;
-        y = fSin * t + fCos * y;
-    }
-
-    glEnd();
-}
 // ------------------------------------------------------
 // our widget
 
@@ -96,11 +69,11 @@ protected:
         tri.drawOutline();
 
         glColor3f(0.235f, 0.271f, 0.294f);
-        drawCircle<int>(Point<int>(150, 200), 50, 300, false);
+        cir.draw();
 
         glLineWidth(2.0f);
         glColor3f(0.176f/4, 0.212f/4, 0.235f/4);
-        drawCircle<int>(Point<int>(150, 200), 50, 300, true);
+        cir.drawOutline();
     }
 
     void onReshape(int width, int height) override
@@ -114,6 +87,9 @@ protected:
         // center triangle
         tri = Triangle<int>(width*0.5, height*0.1, width*0.1, height*0.9, width*0.9, height*0.9);
 
+        // circle
+        cir = Circle<int>(width/2, height*2/3, height/6, 300);
+
         // make widget same size as window
         setSize(width, height);
 
@@ -124,6 +100,7 @@ protected:
 private:
     Rectangle<int> bgFull, bgSmall;
     Triangle<int> tri;
+    Circle<int> cir;
 };
 
 // ------------------------------------------------------
