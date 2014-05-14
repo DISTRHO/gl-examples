@@ -21,11 +21,40 @@
 #include "Window.hpp"
 #include "Widget.hpp"
 
+#include <cmath>
+
 // ------------------------------------------------------
 // use namespace
 
 using namespace DGL;
 
+// taken from http://slabode.exofire.net/circle_draw.shtml
+template<typename T>
+void drawCircle(const Point<T>& fPos, const T& fSize, const int fNumSegments, const bool isOutline)
+{
+    // precalculate the sine and cosine
+    const float fTheta = 2.0f * 3.1415926f / float(fNumSegments);
+    const float fCos = std::cos(fTheta);
+    const float fSin = std::sin(fTheta);
+
+    // paint
+    float t, x = fSize, y = 0;
+
+    glBegin(isOutline ? GL_LINE_LOOP : GL_POLYGON);
+
+    for (int i=0; i<fNumSegments; ++i)
+    {
+        // output vertex
+        glVertex2f(x + fPos.getX(), y + fPos.getY());
+
+        // apply the rotation matrix
+        t = x;
+        x = fCos * x - fSin * y;
+        y = fSin * t + fCos * y;
+    }
+
+    glEnd();
+}
 // ------------------------------------------------------
 // our widget
 
@@ -65,6 +94,13 @@ protected:
         glLineWidth(3.0f);
         glColor3f(0.302f/2.0f, 0.337f/2.0f, 0.361f/2.0f);
         tri.drawOutline();
+
+        glColor3f(0.235f, 0.271f, 0.294f);
+        drawCircle<int>(Point<int>(150, 200), 50, 300, false);
+
+        glLineWidth(2.0f);
+        glColor3f(0.176f/4, 0.212f/4, 0.235f/4);
+        drawCircle<int>(Point<int>(150, 200), 50, 300, true);
     }
 
     void onReshape(int width, int height) override
