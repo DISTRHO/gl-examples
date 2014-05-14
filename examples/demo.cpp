@@ -40,6 +40,16 @@ public:
 protected:
     void onDisplay() override
     {
+#if 0
+        glEnable(GL_MULTISAMPLE);
+        glEnable(GL_LINE_SMOOTH);
+        glEnable(GL_SRC_ALPHA);
+        glEnable(GL_ONE_MINUS_SRC_ALPHA);
+        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+#endif
+
+        glLineWidth(1.0f);
         glColor3f(0.302f, 0.337f, 0.361f);
         bgFull.draw();
 
@@ -51,9 +61,13 @@ protected:
 
         glColor3f(0.302f*2, 0.337f*2, 0.361f*2);
         tri.draw();
+
+        glLineWidth(3.0f);
+        glColor3f(0.302f/2.0f, 0.337f/2.0f, 0.361f/2.0f);
+        tri.drawOutline();
     }
 
-    void onReshape(int width, int height)
+    void onReshape(int width, int height) override
     {
         // full bg
         bgFull = DGL::Rectangle<int>(0, 0, width, height);
