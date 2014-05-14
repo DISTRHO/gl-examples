@@ -106,10 +106,10 @@ protected:
     void onReshape(int width, int height) override
     {
         // full bg
-        bgFull = DGL::Rectangle<int>(0, 0, width, height);
+        bgFull = Rectangle<int>(0, 0, width, height);
 
         // small bg
-        bgSmall = DGL::Rectangle<int>(20, 10, width-40, height-20);
+        bgSmall = Rectangle<int>(20, 10, width-40, height-20);
 
         // center triangle
         tri = Triangle<int>(width*0.5, height*0.1, width*0.1, height*0.9, width*0.9, height*0.9);

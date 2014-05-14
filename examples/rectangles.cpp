@@ -45,7 +45,7 @@ protected:
         const int width  = getWidth();
         const int height = getHeight();
 
-        DGL::Rectangle<int> r;
+        Rectangle<int> r;
 
         r.setWidth(width/3 - 6);
         r.setHeight(height/3 - 6);
@@ -104,7 +104,7 @@ protected:
         const int width  = getWidth();
         const int height = getHeight();
 
-        DGL::Rectangle<int> r;
+        Rectangle<int> r;
 
         r.setWidth(width/3 - 6);
         r.setHeight(height/3 - 6);
