@@ -27,6 +27,7 @@
 // ------------------------------------------------------
 // Images
 
+#include "demo_res/DemoArtwork.cpp"
 #include "images_res/CatPics.cpp"
 
 // ------------------------------------------------------
@@ -42,34 +43,154 @@ using DGL::Size;
 class LeftSizeWidget : public Widget
 {
 public:
-    LeftSizeWidget(Window& parent)
-        : Widget(parent)
+    class Callback
     {
+    public:
+        virtual ~Callback() {}
+        virtual void curPageChanged(int curPage) = 0;
+    };
+
+    LeftSizeWidget(Window& parent, Callback* const cb)
+        : Widget(parent),
+          callback(cb),
+          curPage(0),
+          curHover(-1)
+    {
+        using namespace DemoArtwork;
+        img1.loadFromMemory(ico1Data, ico1Width, ico1Height, GL_BGR);
+        img2.loadFromMemory(ico2Data, ico2Width, ico2Height, GL_BGR);
+        img3.loadFromMemory(ico3Data, ico3Width, ico2Height, GL_BGR);
+        img4.loadFromMemory(ico4Data, ico4Width, ico4Height, GL_BGR);
     }
 
 protected:
     void onDisplay() override
     {
-        glColor3f(0.302f/5, 0.337f/5, 0.361f/5);
+        const int cx = getX();
+        const int cy = getY();
+        const int iconSize = getWidth();
+
+        glColor3f(0.027f, 0.027f, 0.027f);
         bg.draw();
+
+        bgIcon.setY(cy + curPage*iconSize + curPage + 1);
+
+        glColor3f(0.129f, 0.129f, 0.129f);
+        bgIcon.draw();
+
+        glColor3f(0.184f, 0.184f, 0.184f);
+        bgIcon.drawOutline();
+
+        if (curHover != curPage && curHover != -1)
+        {
+            Rectangle<int> rHover(cx + 1, cy + curHover*iconSize + curHover + 1, iconSize-2, iconSize-2);
+
+            glColor3f(0.071f, 0.071f, 0.071f);
+            rHover.draw();
+
+            glColor3f(0.102f, 0.102f, 0.102f);
+            rHover.drawOutline();
+        }
 
         // reset color
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+
+        const int pad = iconSize/2 - DemoArtwork::ico1Width/2;
+
+        img1.drawAt(cx + pad, cy + pad);
+        img2.drawAt(cx + pad, cy + pad + 1 + iconSize);
+        img3.drawAt(cx + pad, cy + pad + 2 + iconSize*2);
+        img4.drawAt(cx + pad, cy + pad + 3 + iconSize*3);
+    }
+
+    bool onMouse(int button, bool press, int x, int y) override
+    {
+        if (button != 1 || ! press)
+            return false;
+        if (! bg.contains(x, y))
+            return false;
+
+        const int iconSize = getWidth();
+
+        for (int i=0; i<4; ++i)
+        {
+            bgIcon.setY(i*iconSize + i + 1);
+
+            if (bgIcon.contains(x, y))
+            {
+                curPage = i;
+                callback->curPageChanged(i);
+                repaint();
+                break;
+            }
+        }
+
+        return true;
+    }
+
+    bool onMotion(int x, int y) override
+    {
+        if (getArea().contains(x, y))
+        {
+            const int iconSize = getWidth();
+
+            for (int i=0; i<4; ++i)
+            {
+                bgIcon.setY(i*iconSize + i + 1);
+
+                if (bgIcon.contains(x, y))
+                {
+                    if (curHover == i)
+                        return true;
+
+                    curHover = i;
+                    repaint();
+                    return true;
+                }
+            }
+
+            if (curHover == -1)
+                return true;
+
+            curHover = -1;
+            repaint();
+            return true;
+        }
+        else
+        {
+            if (curHover == -1)
+                return false;
+
+            curHover = -1;
+            repaint();
+            return true;
+        }
     }
 
     void onReshape(int, int) override
     {
+        const int cx = getX();
+        const int iconSize = getWidth();
+
         bg = getArea();
+
+        bgIcon.setX(cx+1);
+        bgIcon.setWidth(iconSize-2);
+        bgIcon.setHeight(iconSize-2);
     }
 
 private:
-    Rectangle<int> bg;
+    Callback* const callback;
+    int curPage, curHover;
+    Rectangle<int> bg, bgIcon;
+    Image img1, img2, img3, img4;
 };
 
 // ------------------------------------------------------
 // Our Demo Window
 
-class DemoWindow : public Window
+class DemoWindow : public Window,
+                   public LeftSizeWidget::Callback
 {
 public:
     DemoWindow(App& app)
@@ -78,35 +199,66 @@ public:
           wImages(*this),
           wRects(*this),
           wShapes(*this),
-          wLeft(*this),
-          b1(*this, Image()),
-          b2(*this, Image())
+          wLeft(*this, this),
+          curWidget(nullptr)
     {
         wColor.hide();
         wImages.hide();
         wRects.hide();
         wShapes.hide();
 
-        wColor.setX(100);
-        wImages.setX(100);
-        wRects.setX(100);
-        wShapes.setX(100);
+        wColor.setPos(80, 2);
+        wImages.setPos(80, 2);
+        wRects.setPos(80, 2);
+        wShapes.setPos(80, 2);
+        wLeft.setPos(2, 2);
 
         setSize(600, 500);
         setTitle("DGL Demo");
+
+        curPageChanged(0);
     }
 
     void onReshape(int width, int height) override
     {
-        Size<int> size(width-100, height);
+        Size<int> size(width-80, height);
         wColor.setSize(size);
         wImages.setSize(size);
         wRects.setSize(size);
         wShapes.setSize(size);
 
-        wLeft.setSize(100, height);
+        wLeft.setSize(76, height);
 
         Window::onReshape(width, height);
+    }
+
+protected:
+    void curPageChanged(int curPage) override
+    {
+        if (curWidget != nullptr)
+        {
+            curWidget->hide();
+            curWidget = nullptr;
+        }
+
+        switch (curPage)
+        {
+        case 0:
+            curWidget = &wColor;
+            break;
+        case 1:
+            curWidget = &wImages;
+            break;
+        case 2:
+            curWidget = &wRects;
+            break;
+        case 3:
+            curWidget = &wShapes;
+            break;
+        }
+
+        if (curWidget != nullptr)
+            curWidget->show();
     }
 
 private:
@@ -116,7 +268,7 @@ private:
     ExampleShapesWidget wShapes;
     LeftSizeWidget wLeft;
 
-    ImageButton b1, b2;
+    Widget* curWidget;
 };
 
 // ------------------------------------------------------
