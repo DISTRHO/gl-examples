@@ -23,7 +23,7 @@
 // ------------------------------------------------------
 // Images
 
-#include "images_src/CatPics.cpp"
+#include "images_res/CatPics.cpp"
 
 // ------------------------------------------------------
 // use namespace

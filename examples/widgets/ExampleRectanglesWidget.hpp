@@ -46,6 +46,8 @@ public:
 protected:
     void onDisplay() override
     {
+        const int cx = getX();
+        const int cy = getY();
         const int width  = getWidth();
         const int height = getHeight();
 
@@ -57,10 +59,10 @@ protected:
         // draw a 3x3 grid
         for (int i=0; i<3; ++i)
         {
-            r.setX(3 + i*width/3);
+            r.setX(cx + 3 + i*width/3);
 
             // 1st
-            r.setY(3);
+            r.setY(cy + 3);
 
             if (fClicked[0+i])
                 glColor3f(0.8f, 0.5f, 0.3f);
@@ -70,7 +72,7 @@ protected:
             r.draw();
 
             // 2nd
-            r.setY(3 + height/3);
+            r.setY(cy + 3 + height/3);
 
             if (fClicked[3+i])
                 glColor3f(0.8f, 0.5f, 0.3f);
@@ -80,7 +82,7 @@ protected:
             r.draw();
 
             // 3rd
-            r.setY(3 + height*2/3);
+            r.setY(cy + 3 + height*2/3);
 
             if (fClicked[6+i])
                 glColor3f(0.8f, 0.5f, 0.3f);
@@ -94,7 +96,7 @@ protected:
     void onReshape(int width, int height) override
     {
         // make this widget same size as window
-        setSize(width, height);
+        //setSize(width, height);
         Widget::onReshape(width, height);
     }
 
@@ -103,6 +105,8 @@ protected:
         if (button != 1 || ! press)
             return false;
 
+        const int cx = getX();
+        const int cy = getY();
         const int width  = getWidth();
         const int height = getHeight();
 
@@ -114,8 +118,10 @@ protected:
         // draw a 3x3 grid
         for (int i=0; i<3; ++i)
         {
-            r.setX(3 + i*width/3);
-            r.setY(3);
+            r.setX(cx + 3 + i*width/3);
+
+            // 1st
+            r.setY(cy + 3);
 
             if (r.contains(x, y))
             {
@@ -124,7 +130,8 @@ protected:
                 break;
             }
 
-            r.setY(3 + height/3);
+            // 2nd
+            r.setY(cy + 3 + height/3);
 
             if (r.contains(x, y))
             {
@@ -133,7 +140,8 @@ protected:
                 break;
             }
 
-            r.setY(3 + height*2/3);
+            // 3rd
+            r.setY(cy + 3 + height*2/3);
 
             if (r.contains(x, y))
             {

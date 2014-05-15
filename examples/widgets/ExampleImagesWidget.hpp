@@ -27,7 +27,7 @@
 // ------------------------------------------------------
 // Images
 
-#include "../images_src/CatPics.hpp"
+#include "../images_res/CatPics.hpp"
 
 // ------------------------------------------------------
 // use namespace
@@ -144,42 +144,45 @@ private:
 
     void onDisplay() override
     {
+        const int cx = getX();
+        const int cy = getY();
+
         switch (fImgTop3rd)
         {
         case 1:
-            fImg1.drawAt(fImg1x, kImg1y);
+            fImg1.drawAt(fImg1x+cx, kImg1y+cy);
             break;
         case 2:
-            fImg2.drawAt(fImg2x, kImg2y);
+            fImg2.drawAt(fImg2x+cx, kImg2y+cy);
             break;
         case 3:
-            fImg3.drawAt(kImg3x, fImg3y);
+            fImg3.drawAt(kImg3x+cx, fImg3y+cy);
             break;
         };
 
         switch (fImgTop2nd)
         {
         case 1:
-            fImg1.drawAt(fImg1x, kImg1y);
+            fImg1.drawAt(fImg1x+cx, kImg1y+cy);
             break;
         case 2:
-            fImg2.drawAt(fImg2x, kImg2y);
+            fImg2.drawAt(fImg2x+cx, kImg2y+cy);
             break;
         case 3:
-            fImg3.drawAt(kImg3x, fImg3y);
+            fImg3.drawAt(kImg3x+cx, fImg3y+cy);
             break;
         };
 
         switch (fImgTop1st)
         {
         case 1:
-            fImg1.drawAt(fImg1x, kImg1y);
+            fImg1.drawAt(fImg1x+cx, kImg1y+cy);
             break;
         case 2:
-            fImg2.drawAt(fImg2x, kImg2y);
+            fImg2.drawAt(fImg2x+cx, kImg2y+cy);
             break;
         case 3:
-            fImg3.drawAt(kImg3x, fImg3y);
+            fImg3.drawAt(kImg3x+cx, fImg3y+cy);
             break;
         };
     }

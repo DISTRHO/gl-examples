@@ -17,6 +17,7 @@
 // ------------------------------------------------------
 // DGL Stuff
 
+#include "ImageButton.hpp"
 #include "StandaloneWindow.hpp"
 #include "widgets/ExampleColorWidget.hpp"
 #include "widgets/ExampleImagesWidget.hpp"
@@ -26,12 +27,46 @@
 // ------------------------------------------------------
 // Images
 
-#include "images_src/CatPics.cpp"
+#include "images_res/CatPics.cpp"
 
 // ------------------------------------------------------
 // use namespace
 
 using DGL::App;
+using DGL::ImageButton;
+
+// ------------------------------------------------------
+// Our Demo Window
+
+class LeftSizeWidget : public Widget
+{
+public:
+    LeftSizeWidget(Window& parent)
+        : Widget(parent),
+          rect(0, 0, 100, 0)
+    {
+    }
+
+protected:
+    void onDisplay() override
+    {
+        glColor3f(0.302f, 0.337f, 0.361f);
+        rect.draw();
+
+        // reset color
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    }
+
+    void onReshape(int width, int height) override
+    {
+        // always 100px width
+        rect.setHeight(height);
+        setSize(100, height);
+    }
+
+private:
+    Rectangle<int> rect;
+};
 
 // ------------------------------------------------------
 // Our Demo Window
@@ -40,15 +75,56 @@ class DemoWindow : public Window
 {
 public:
     DemoWindow(App& app)
-        : Window(app)//,
-          //w1(*this)
+        : Window(app),
+          wColor(*this),
+          wImages(*this),
+          wRects(*this),
+          wShapes(*this),
+          wLeft(*this),
+          b1(*this, Image()),
+          b2(*this, Image())
     {
-        setSize(300, 300);
+        wColor.hide();
+        wImages.hide();
+        //wRects.hide();
+        wShapes.hide();
+
+        wColor.setX(100);
+        wImages.setX(100);
+        wRects.setX(100);
+        wShapes.setX(100);
+
+        setSize(600, 500);
         setTitle("DGL Demo");
+
+        //wLeft.toFront();
+    }
+
+#if 0
+    bool onMouse(int button, bool press, int x, int y) override
+    {
+        if (button != 1 || ! press)
+            return false;
+
+        return true;
+    }
+#endif
+
+    void onReshapeAAA(int width, int height) override
+    {
+        wRects.setSize(width-100, height);
+
+        //Window::onReshape(width, height);
     }
 
 private:
-    //DummyWidget w1;
+    ExampleColorWidget wColor;
+    ExampleImagesWidget wImages;
+    ExampleRectanglesWidget wRects;
+    ExampleShapesWidget wShapes;
+    LeftSizeWidget wLeft;
+
+    ImageButton b1, b2;
 };
 
 // ------------------------------------------------------

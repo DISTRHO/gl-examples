@@ -48,7 +48,7 @@ color: color.cpp ../dpf/dgl/*
 demo: demo.cpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
-images: images.cpp images_src/* ../dpf/dgl/*
+images: images.cpp images_res/* ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
 rectangles: rectangles.cpp ../dpf/dgl/*
