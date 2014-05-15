@@ -39,6 +39,8 @@ public:
     ExampleRectanglesWidget(Window& parent)
         : Widget(parent)
     {
+        setSize(300, 300);
+
         for (int i=0; i<9; ++i)
             fClicked[i] = false;
     }
@@ -91,13 +93,6 @@ protected:
 
             r.draw();
         }
-    }
-
-    void onReshape(int width, int height) override
-    {
-        // make this widget same size as window
-        //setSize(width, height);
-        Widget::onReshape(width, height);
     }
 
     bool onMouse(int button, bool press, int x, int y) override

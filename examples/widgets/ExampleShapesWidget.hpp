@@ -39,7 +39,10 @@ class ExampleShapesWidget : public Widget
 {
 public:
     ExampleShapesWidget(Window& parent)
-        : Widget(parent) {}
+        : Widget(parent)
+    {
+        setSize(300, 300);
+    }
 
 protected:
     void onDisplay() override
@@ -78,25 +81,24 @@ protected:
         cir.drawOutline();
     }
 
-    void onReshape(int width, int height) override
+    void onReshape(int, int) override
     {
+        const int cx = getX();
+        const int cy = getY();
+        const int width  = getWidth();
+        const int height = getHeight();
+
         // background
-        bg = Rectangle<int>(0, 0, width, height);
+        bg = Rectangle<int>(cx, cy, width, height);
 
         // rectangle
-        rect = Rectangle<int>(20, 10, width-40, height-20);
+        rect = Rectangle<int>(cx+20, cy+10, width-40, height-20);
 
         // center triangle
-        tri = Triangle<int>(width*0.5, height*0.1, width*0.1, height*0.9, width*0.9, height*0.9);
+        tri = Triangle<int>(cx+width*0.5, cy+height*0.1, cx+width*0.1, cy+height*0.9, cx+width*0.9, cy+height*0.9);
 
         // circle
-        cir = Circle<int>(width/2, height*2/3, height/6, 300);
-
-        // make widget same size as window
-        setSize(width, height);
-
-        // default reshape implementation
-        Widget::onReshape(width, height);
+        cir = Circle<int>(cx+width/2, cy+height*2/3, height/6, 300);
     }
 
 private:

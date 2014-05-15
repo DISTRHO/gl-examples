@@ -36,7 +36,7 @@ using DGL::StandaloneWindow;
 int main()
 {
     StandaloneWindow swin;
-    ExampleImagesWidget widget(swin.getWindow(), true);
+    ExampleImagesWidget widget(swin, true);
 
     swin.setTitle("Images");
     swin.exec();

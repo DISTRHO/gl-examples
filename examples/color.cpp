@@ -31,7 +31,7 @@ using DGL::StandaloneWindow;
 int main()
 {
     StandaloneWindow swin;
-    ExampleColorWidget widget(swin.getWindow());
+    ExampleColorWidget widget(swin);
 
     swin.setSize(300, 300);
     swin.setTitle("Color");

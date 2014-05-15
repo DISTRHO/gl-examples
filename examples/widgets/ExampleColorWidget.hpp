@@ -44,6 +44,8 @@ public:
           reverse(false),
           r(0), g(0), b(0)
     {
+        setSize(300, 300);
+
         parent.addIdleCallback(this);
     }
 
@@ -112,19 +114,18 @@ protected:
         bgSmall.draw();
     }
 
-    void onReshape(int width, int height) override
+    void onReshape(int, int) override
     {
+        const int cx = getX();
+        const int cy = getY();
+        const int width  = getWidth();
+        const int height = getHeight();
+
         // full bg
-        bgFull = Rectangle<int>(0, 0, width, height);
+        bgFull = Rectangle<int>(cx, cy, width, height);
 
         // small bg, centered 2/3 size
-        bgSmall = Rectangle<int>(width/6, height/6, width*2/3, height*2/3);
-
-        // make widget same size as window
-        setSize(width, height);
-
-        // default reshape implementation
-        Widget::onReshape(width, height);
+        bgSmall = Rectangle<int>(cx+width/6, cy+height/6, width*2/3, height*2/3);
     }
 
     char cur;

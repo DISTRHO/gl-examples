@@ -31,7 +31,7 @@ using DGL::StandaloneWindow;
 int main()
 {
     StandaloneWindow swin;
-    ExampleRectanglesWidget widget(swin.getWindow());
+    ExampleRectanglesWidget widget(swin);
 
     swin.setSize(300, 300);
     swin.setTitle("Rectangles");

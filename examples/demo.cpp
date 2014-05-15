@@ -34,6 +34,7 @@
 
 using DGL::App;
 using DGL::ImageButton;
+using DGL::Size;
 
 // ------------------------------------------------------
 // Our Demo Window
@@ -50,14 +51,14 @@ public:
 protected:
     void onDisplay() override
     {
-        glColor3f(0.302f, 0.337f, 0.361f);
+        glColor3f(0.302f/5, 0.337f/5, 0.361f/5);
         rect.draw();
 
         // reset color
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
-    void onReshape(int width, int height) override
+    void onReshape(int, int height) override
     {
         // always 100px width
         rect.setHeight(height);
@@ -84,9 +85,9 @@ public:
           b1(*this, Image()),
           b2(*this, Image())
     {
-        wColor.hide();
+        //wColor.hide();
         wImages.hide();
-        //wRects.hide();
+        wRects.hide();
         wShapes.hide();
 
         wColor.setX(100);
@@ -100,21 +101,15 @@ public:
         //wLeft.toFront();
     }
 
-#if 0
-    bool onMouse(int button, bool press, int x, int y) override
+    void onReshape(int width, int height) override
     {
-        if (button != 1 || ! press)
-            return false;
+        Size<int> size(width-100, height);
+        wColor.setSize(size);
+        wImages.setSize(size);
+        wRects.setSize(size);
+        wShapes.setSize(size);
 
-        return true;
-    }
-#endif
-
-    void onReshapeAAA(int width, int height) override
-    {
-        wRects.setSize(width-100, height);
-
-        //Window::onReshape(width, height);
+        Window::onReshape(width, height);
     }
 
 private:

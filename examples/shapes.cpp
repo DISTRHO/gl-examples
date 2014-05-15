@@ -31,7 +31,7 @@ using DGL::StandaloneWindow;
 int main()
 {
     StandaloneWindow swin;
-    ExampleShapesWidget widget(swin.getWindow());
+    ExampleShapesWidget widget(swin);
 
     swin.setSize(300, 300);
     swin.setTitle("Shapes");
