@@ -17,91 +17,21 @@
 // ------------------------------------------------------
 // DGL Stuff
 
-#include "App.hpp"
-#include "Window.hpp"
-#include "Widget.hpp"
+#include "StandaloneWindow.hpp"
+#include "widgets/ExampleColorWidget.hpp"
+#include "widgets/ExampleImagesWidget.hpp"
+#include "widgets/ExampleRectanglesWidget.hpp"
+#include "widgets/ExampleShapesWidget.hpp"
 
-#include <cmath>
+// ------------------------------------------------------
+// Images
+
+#include "images_src/CatPics.cpp"
 
 // ------------------------------------------------------
 // use namespace
 
-using namespace DGL;
-
-// ------------------------------------------------------
-// our widget
-
-class DummyWidget : public Widget
-{
-public:
-    DummyWidget(Window& win)
-        : Widget(win)
-    {
-    }
-
-protected:
-    void onDisplay() override
-    {
-#if 0
-        glEnable(GL_MULTISAMPLE);
-        glEnable(GL_LINE_SMOOTH);
-        glEnable(GL_SRC_ALPHA);
-        glEnable(GL_ONE_MINUS_SRC_ALPHA);
-        glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
-        glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-#endif
-
-        glLineWidth(1.0f);
-        glColor3f(0.302f, 0.337f, 0.361f);
-        bgFull.draw();
-
-        glColor3f(0.235f, 0.271f, 0.294f);
-        bgSmall.draw();
-
-        glColor3f(0.176f, 0.212f, 0.235f);
-        bgSmall.drawOutline();
-
-        glColor3f(0.302f*2, 0.337f*2, 0.361f*2);
-        tri.draw();
-
-        glLineWidth(3.0f);
-        glColor3f(0.302f/2.0f, 0.337f/2.0f, 0.361f/2.0f);
-        tri.drawOutline();
-
-        glColor3f(0.235f, 0.271f, 0.294f);
-        cir.draw();
-
-        glLineWidth(2.0f);
-        glColor3f(0.176f/4, 0.212f/4, 0.235f/4);
-        cir.drawOutline();
-    }
-
-    void onReshape(int width, int height) override
-    {
-        // full bg
-        bgFull = Rectangle<int>(0, 0, width, height);
-
-        // small bg
-        bgSmall = Rectangle<int>(20, 10, width-40, height-20);
-
-        // center triangle
-        tri = Triangle<int>(width*0.5, height*0.1, width*0.1, height*0.9, width*0.9, height*0.9);
-
-        // circle
-        cir = Circle<int>(width/2, height*2/3, height/6, 300);
-
-        // make widget same size as window
-        setSize(width, height);
-
-        // default reshape implementation
-        Widget::onReshape(width, height);
-    }
-
-private:
-    Rectangle<int> bgFull, bgSmall;
-    Triangle<int> tri;
-    Circle<int> cir;
-};
+using DGL::App;
 
 // ------------------------------------------------------
 // Our Demo Window
@@ -110,15 +40,15 @@ class DemoWindow : public Window
 {
 public:
     DemoWindow(App& app)
-        : Window(app),
-          w1(*this)
+        : Window(app)//,
+          //w1(*this)
     {
         setSize(300, 300);
         setTitle("DGL Demo");
     }
 
 private:
-    DummyWidget w1;
+    //DummyWidget w1;
 };
 
 // ------------------------------------------------------

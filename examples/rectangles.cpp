@@ -17,150 +17,25 @@
 // ------------------------------------------------------
 // DGL Stuff
 
-#include "App.hpp"
-#include "Window.hpp"
-#include "Widget.hpp"
+#include "StandaloneWindow.hpp"
+#include "widgets/ExampleRectanglesWidget.hpp"
 
 // ------------------------------------------------------
 // use namespace
 
-using namespace DGL;
-
-// ------------------------------------------------------
-// our widget
-
-class RectanglesWidget : public Widget
-{
-public:
-    RectanglesWidget(Window& parent)
-        : Widget(parent)
-    {
-        for (int i=0; i<9; ++i)
-            fClicked[i] = false;
-    }
-
-protected:
-    void onDisplay() override
-    {
-        const int width  = getWidth();
-        const int height = getHeight();
-
-        Rectangle<int> r;
-
-        r.setWidth(width/3 - 6);
-        r.setHeight(height/3 - 6);
-
-        // draw a 3x3 grid
-        for (int i=0; i<3; ++i)
-        {
-            r.setX(3 + i*width/3);
-
-            // 1st
-            r.setY(3);
-
-            if (fClicked[0+i])
-                glColor3f(0.8f, 0.5f, 0.3f);
-            else
-                glColor3f(0.3f, 0.5f, 0.8f);
-
-            r.draw();
-
-            // 2nd
-            r.setY(3 + height/3);
-
-            if (fClicked[3+i])
-                glColor3f(0.8f, 0.5f, 0.3f);
-            else
-                glColor3f(0.3f, 0.5f, 0.8f);
-
-            r.draw();
-
-            // 3rd
-            r.setY(3 + height*2/3);
-
-            if (fClicked[6+i])
-                glColor3f(0.8f, 0.5f, 0.3f);
-            else
-                glColor3f(0.3f, 0.5f, 0.8f);
-
-            r.draw();
-        }
-    }
-
-    void onReshape(int width, int height) override
-    {
-        // make this widget same size as window
-        setSize(width, height);
-        Widget::onReshape(width, height);
-    }
-
-    bool onMouse(int button, bool press, int x, int y) override
-    {
-        if (button != 1 || ! press)
-            return false;
-
-        const Point<int> pos(x, y);
-
-        const int width  = getWidth();
-        const int height = getHeight();
-
-        Rectangle<int> r;
-
-        r.setWidth(width/3 - 6);
-        r.setHeight(height/3 - 6);
-
-        // draw a 3x3 grid
-        for (int i=0; i<3; ++i)
-        {
-            r.setX(3 + i*width/3);
-            r.setY(3);
-
-            if (r.contains(pos))
-            {
-                fClicked[0+i] = !fClicked[0+i];
-                repaint();
-                break;
-            }
-
-            r.setY(3 + height/3);
-
-            if (r.contains(pos))
-            {
-                fClicked[3+i] = !fClicked[3+i];
-                repaint();
-                break;
-            }
-
-            r.setY(3 + height*2/3);
-
-            if (r.contains(pos))
-            {
-                fClicked[6+i] = !fClicked[6+i];
-                repaint();
-                break;
-            }
-        }
-
-        return true;
-    }
-
-private:
-    bool fClicked[9];
-};
+using DGL::StandaloneWindow;
 
 // ------------------------------------------------------
 // main entry point
 
 int main()
 {
-    App app;
-    Window win(app);
-    RectanglesWidget rects(win);
+    StandaloneWindow swin;
+    ExampleRectanglesWidget widget(swin.getWindow());
 
-    win.setSize(300, 300);
-    win.setTitle("Rectangles");
-    win.show();
-    app.exec();
+    swin.setSize(300, 300);
+    swin.setTitle("Rectangles");
+    swin.exec();
 
     return 0;
 }

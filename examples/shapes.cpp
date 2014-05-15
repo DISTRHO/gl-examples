@@ -18,7 +18,7 @@
 // DGL Stuff
 
 #include "StandaloneWindow.hpp"
-#include "widgets/ExampleColorWidget.hpp"
+#include "widgets/ExampleShapesWidget.hpp"
 
 // ------------------------------------------------------
 // use namespace
@@ -31,10 +31,10 @@ using DGL::StandaloneWindow;
 int main()
 {
     StandaloneWindow swin;
-    ExampleColorWidget widget(swin.getWindow());
+    ExampleShapesWidget widget(swin.getWindow());
 
     swin.setSize(300, 300);
-    swin.setTitle("Color");
+    swin.setTitle("Shapes");
     swin.exec();
 
     return 0;

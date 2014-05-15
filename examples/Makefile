@@ -16,9 +16,9 @@ WINDRES ?= windres
 # --------------------------------------------------------------
 
 ifeq ($(WIN32),true)
-TARGETS = app.exe color.exe demo.exe images.exe rectangles.exe
+TARGETS = app.exe color.exe demo.exe images.exe rectangles.exe shapes.exe
 else
-TARGETS = app color demo images rectangles
+TARGETS = app color demo images rectangles shapes
 endif
 
 # --------------------------------------------------------------
@@ -52,6 +52,9 @@ images: images.cpp images_src/* ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
 rectangles: rectangles.cpp ../dpf/dgl/*
+	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
+
+shapes: shapes.cpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
 # --------------------------------------------------------------
