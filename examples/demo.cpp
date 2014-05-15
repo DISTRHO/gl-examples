@@ -35,6 +35,7 @@
 
 using DGL::App;
 using DGL::ImageButton;
+using DGL::Line;
 using DGL::Size;
 
 // ------------------------------------------------------
@@ -91,6 +92,10 @@ protected:
             glColor3f(0.102f, 0.102f, 0.102f);
             rHover.drawOutline();
         }
+
+        glLineWidth(2.0f);
+        glColor3f(0.184f, 0.184f, 0.184f);
+        lineSep.draw();
 
         // reset color
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
@@ -177,12 +182,16 @@ protected:
         bgIcon.setX(cx+1);
         bgIcon.setWidth(iconSize-2);
         bgIcon.setHeight(iconSize-2);
+
+        lineSep.setStartPos(iconSize+4, getY());
+        lineSep.setEndPos(iconSize+4, getHeight());
     }
 
 private:
     Callback* const callback;
     int curPage, curHover;
     Rectangle<int> bg, bgIcon;
+    Line<int> lineSep;
     Image img1, img2, img3, img4;
 };
 
@@ -227,7 +236,7 @@ public:
         wRects.setSize(size);
         wShapes.setSize(size);
 
-        wLeft.setSize(76, height);
+        wLeft.setSize(73, height);
 
         Window::onReshape(width, height);
     }
