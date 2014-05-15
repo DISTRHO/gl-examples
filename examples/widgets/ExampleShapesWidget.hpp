@@ -89,7 +89,7 @@ protected:
         const int height = getHeight();
 
         // background
-        bg = Rectangle<int>(cx, cy, width, height);
+        bg = getArea();
 
         // rectangle
         rect = Rectangle<int>(cx+20, cy+10, width-40, height-20);

@@ -122,7 +122,7 @@ protected:
         const int height = getHeight();
 
         // full bg
-        bgFull = Rectangle<int>(cx, cy, width, height);
+        bgFull = getArea();
 
         // small bg, centered 2/3 size
         bgSmall = Rectangle<int>(cx+width/6, cy+height/6, width*2/3, height*2/3);

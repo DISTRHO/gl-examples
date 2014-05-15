@@ -43,8 +43,7 @@ class LeftSizeWidget : public Widget
 {
 public:
     LeftSizeWidget(Window& parent)
-        : Widget(parent),
-          rect(0, 0, 100, 0)
+        : Widget(parent)
     {
     }
 
@@ -52,21 +51,19 @@ protected:
     void onDisplay() override
     {
         glColor3f(0.302f/5, 0.337f/5, 0.361f/5);
-        rect.draw();
+        bg.draw();
 
         // reset color
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
     }
 
-    void onReshape(int, int height) override
+    void onReshape(int, int) override
     {
-        // always 100px width
-        rect.setHeight(height);
-        setSize(100, height);
+        bg = getArea();
     }
 
 private:
-    Rectangle<int> rect;
+    Rectangle<int> bg;
 };
 
 // ------------------------------------------------------
@@ -85,7 +82,7 @@ public:
           b1(*this, Image()),
           b2(*this, Image())
     {
-        //wColor.hide();
+        wColor.hide();
         wImages.hide();
         wRects.hide();
         wShapes.hide();
@@ -97,8 +94,6 @@ public:
 
         setSize(600, 500);
         setTitle("DGL Demo");
-
-        //wLeft.toFront();
     }
 
     void onReshape(int width, int height) override
@@ -108,6 +103,8 @@ public:
         wImages.setSize(size);
         wRects.setSize(size);
         wShapes.setSize(size);
+
+        wLeft.setSize(100, height);
 
         Window::onReshape(width, height);
     }
