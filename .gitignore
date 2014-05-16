@@ -13,5 +13,6 @@ examples/app
 examples/color
 examples/demo
 examples/images
+examples/qt-embed
 examples/rectangles
 examples/shapes

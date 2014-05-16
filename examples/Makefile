@@ -59,10 +59,13 @@ shapes: shapes.cpp ../dpf/dgl/*
 
 # --------------------------------------------------------------
 
-cairo: cairo.cpp ../dgl/*
+cairo: cairo.cpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(shell pkg-config --cflags --libs cairo) $(LINK_FLAGS) -o $@
 
-text: text.cpp ../dgl/*
+qt-embed: qt-embed.cpp ../dpf/dgl/*
+	$(CXX) $< $(BUILD_CXX_FLAGS) $(shell pkg-config --cflags --libs QtCore QtGui) $(LINK_FLAGS) -o $@
+
+text: text.cpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
 # --------------------------------------------------------------

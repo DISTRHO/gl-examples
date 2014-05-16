@@ -23,7 +23,8 @@
 // ------------------------------------------------------
 // use namespace
 
-using namespace DGL;
+using DGL::App;
+using DGL::Window;
 
 // ------------------------------------------------------
 // main entry point
