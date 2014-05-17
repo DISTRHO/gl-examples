@@ -114,11 +114,8 @@ protected:
         bgSmall.draw();
     }
 
-    void onReshape(int, int) override
+    void onReshape(int width, int height) override
     {
-        const int width  = getWidth();
-        const int height = getHeight();
-
         // full bg
         bgFull = Rectangle<int>(0, 0, width, height);
 
