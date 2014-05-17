@@ -144,45 +144,42 @@ private:
 
     void onDisplay() override
     {
-        const int cx = getX();
-        const int cy = getY();
-
         switch (fImgTop3rd)
         {
         case 1:
-            fImg1.drawAt(fImg1x+cx, kImg1y+cy);
+            fImg1.drawAt(fImg1x, kImg1y);
             break;
         case 2:
-            fImg2.drawAt(fImg2x+cx, kImg2y+cy);
+            fImg2.drawAt(fImg2x, kImg2y);
             break;
         case 3:
-            fImg3.drawAt(kImg3x+cx, fImg3y+cy);
+            fImg3.drawAt(kImg3x, fImg3y);
             break;
         };
 
         switch (fImgTop2nd)
         {
         case 1:
-            fImg1.drawAt(fImg1x+cx, kImg1y+cy);
+            fImg1.drawAt(fImg1x, kImg1y);
             break;
         case 2:
-            fImg2.drawAt(fImg2x+cx, kImg2y+cy);
+            fImg2.drawAt(fImg2x, kImg2y);
             break;
         case 3:
-            fImg3.drawAt(kImg3x+cx, fImg3y+cy);
+            fImg3.drawAt(kImg3x, fImg3y);
             break;
         };
 
         switch (fImgTop1st)
         {
         case 1:
-            fImg1.drawAt(fImg1x+cx, kImg1y+cy);
+            fImg1.drawAt(fImg1x, kImg1y);
             break;
         case 2:
-            fImg2.drawAt(fImg2x+cx, kImg2y+cy);
+            fImg2.drawAt(fImg2x, kImg2y);
             break;
         case 3:
-            fImg3.drawAt(kImg3x+cx, fImg3y+cy);
+            fImg3.drawAt(kImg3x, fImg3y);
             break;
         };
     }

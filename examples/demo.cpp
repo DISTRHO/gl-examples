@@ -67,14 +67,12 @@ public:
 protected:
     void onDisplay() override
     {
-        const int cx = getX();
-        const int cy = getY();
         const int iconSize = getWidth();
 
         glColor3f(0.027f, 0.027f, 0.027f);
         bg.draw();
 
-        bgIcon.setY(cy + curPage*iconSize + curPage + 1);
+        bgIcon.setY(curPage*iconSize + curPage + 1);
 
         glColor3f(0.129f, 0.129f, 0.129f);
         bgIcon.draw();
@@ -84,7 +82,7 @@ protected:
 
         if (curHover != curPage && curHover != -1)
         {
-            Rectangle<int> rHover(cx + 1, cy + curHover*iconSize + curHover + 1, iconSize-2, iconSize-2);
+            Rectangle<int> rHover(1, curHover*iconSize + curHover + 1, iconSize-2, iconSize-2);
 
             glColor3f(0.071f, 0.071f, 0.071f);
             rHover.draw();
@@ -102,10 +100,10 @@ protected:
 
         const int pad = iconSize/2 - DemoArtwork::ico1Width/2;
 
-        img1.drawAt(cx + pad, cy + pad);
-        img2.drawAt(cx + pad, cy + pad + 1 + iconSize);
-        img3.drawAt(cx + pad, cy + pad + 2 + iconSize*2);
-        img4.drawAt(cx + pad, cy + pad + 3 + iconSize*3);
+        img1.drawAt(pad, pad);
+        img2.drawAt(pad, pad + 1 + iconSize);
+        img3.drawAt(pad, pad + 2 + iconSize*2);
+        img4.drawAt(pad, pad + 3 + iconSize*3);
     }
 
     bool onMouse(int button, bool press, int x, int y) override
@@ -135,7 +133,7 @@ protected:
 
     bool onMotion(int x, int y) override
     {
-        if (getArea().contains(x, y))
+        if (contains(x, y))
         {
             const int iconSize = getWidth();
 
@@ -172,19 +170,15 @@ protected:
         }
     }
 
-    void onReshape(int, int) override
+    void onReshape(int width, int height) override
     {
-        const int cx = getX();
-        const int iconSize = getWidth();
+        bg.setSize(width, height);
 
-        bg = getArea();
+        bgIcon.setWidth(width-2);
+        bgIcon.setHeight(width-2);
 
-        bgIcon.setX(cx+1);
-        bgIcon.setWidth(iconSize-2);
-        bgIcon.setHeight(iconSize-2);
-
-        lineSep.setStartPos(iconSize+4, getY());
-        lineSep.setEndPos(iconSize+4, getHeight());
+        lineSep.setStartX(width+2);
+        lineSep.setEndPos(width+2, height);
     }
 
 private:
@@ -216,10 +210,10 @@ public:
         wRects.hide();
         wShapes.hide();
 
-        wColor.setPos(80, 2);
-        wImages.setPos(80, 2);
-        wRects.setPos(80, 2);
-        wShapes.setPos(80, 2);
+        wColor.setX(80);
+        wImages.setX(80);
+        wRects.setX(80);
+        wShapes.setX(80);
         wLeft.setPos(2, 2);
 
         setSize(600, 500);
@@ -236,7 +230,7 @@ public:
         wRects.setSize(size);
         wShapes.setSize(size);
 
-        wLeft.setSize(73, height);
+        wLeft.setSize(73, height-4);
 
         Window::onReshape(width, height);
     }

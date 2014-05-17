@@ -116,16 +116,14 @@ protected:
 
     void onReshape(int, int) override
     {
-        const int cx = getX();
-        const int cy = getY();
         const int width  = getWidth();
         const int height = getHeight();
 
         // full bg
-        bgFull = getArea();
+        bgFull = Rectangle<int>(0, 0, width, height);
 
         // small bg, centered 2/3 size
-        bgSmall = Rectangle<int>(cx+width/6, cy+height/6, width*2/3, height*2/3);
+        bgSmall = Rectangle<int>(width/6, height/6, width*2/3, height*2/3);
     }
 
     char cur;

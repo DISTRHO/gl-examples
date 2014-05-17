@@ -45,7 +45,7 @@ app: app.cpp ../dpf/dgl/*
 color: color.cpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
-demo: demo.cpp ../dpf/dgl/*
+demo: demo.cpp widgets/* ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
 images: images.cpp images_res/* ../dpf/dgl/*
