@@ -39,9 +39,9 @@ using DGL::Line;
 using DGL::Size;
 
 // ------------------------------------------------------
-// Our Demo Window
+// Left side tab-like widget
 
-class LeftSizeWidget : public Widget
+class LeftSideWidget : public Widget
 {
 public:
     class Callback
@@ -51,7 +51,7 @@ public:
         virtual void curPageChanged(int curPage) = 0;
     };
 
-    LeftSizeWidget(Window& parent, Callback* const cb)
+    LeftSideWidget(Window& parent, Callback* const cb)
         : Widget(parent),
           callback(cb),
           curPage(0),
@@ -110,7 +110,7 @@ protected:
     {
         if (button != 1 || ! press)
             return false;
-        if (! bg.contains(x, y))
+        if (! contains(x, y))
             return false;
 
         const int iconSize = getWidth();
@@ -190,10 +190,113 @@ private:
 };
 
 // ------------------------------------------------------
+// Resize handle
+
+class ResizeHandle : public Widget
+{
+public:
+    ResizeHandle(Window& parent)
+        : Widget(parent),
+          fMouseUnder(false),
+          fLastX(0),
+          fLastY(0)
+    {
+        fColor[0] = 1.0f;
+        fColor[1] = 1.0f;
+        fColor[2] = 1.0f;
+        fColor[3] = 1.0f;
+
+        setSize(16, 16);
+    }
+
+    void setColor(float color[4]) noexcept
+    {
+        std::memcpy(fColor, color, sizeof(float)*4);
+    }
+
+protected:
+    void onDisplay() override
+    {
+        glColor4f(fColor[0], fColor[1], fColor[2], fColor[3]);
+
+        fLine1.draw();
+        fLine2.draw();
+        fLine3.draw();
+
+        // reset color
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+    }
+
+    void onReshape(int width, int height) override
+    {
+        fLine1.setStartPos(width/10, height*9/10);
+        fLine1.setEndPos(width*9/10, width/10);
+
+        fLine2.setStartPos(width*4/10, height*9/10);
+        fLine2.setEndPos(width*9/10, height*4/10);
+
+        fLine3.setStartPos(width*7/10, height*9/10);
+        fLine3.setEndPos(width*9/10, height*7/10);
+    }
+
+    bool onMouse(int button, bool press, int x, int y) override
+    {
+        if (button != 1)
+            return false;
+
+        if (fMouseUnder)
+        {
+            if (! press)
+                fMouseUnder = false;
+            return true;
+        }
+
+        if (! contains(x, y))
+            return false;
+        if (! press)
+            return false;
+
+        fLastX = x+getX();
+        fLastY = y+getY();
+        fMouseUnder = true;
+        return true;
+    }
+
+    bool onMotion(int x, int y) override
+    {
+        if (! fMouseUnder)
+            return false;
+
+        x += getX();
+        y += getY();
+
+        const int movedX = x - fLastX;
+        const int movedY = y - fLastY;
+        fLastX = x;
+        fLastY = y;
+
+        d_stdout("Moved %i, %i", movedX, movedY);
+
+        Size<uint> size(getParentWindow().getSize());
+        size += Size<uint>(movedX, movedY);
+
+        getParentWindow().setSize(size);
+        repaint();
+
+        return true;
+    }
+
+    float fColor[4];
+    bool  fMouseUnder;
+    int   fLastX, fLastY;
+    Line<float> fLine1, fLine2, fLine3;
+};
+
+// ------------------------------------------------------
 // Our Demo Window
 
 class DemoWindow : public Window,
-                   public LeftSizeWidget::Callback
+                   public LeftSideWidget::Callback
 {
 public:
     DemoWindow(App& app)
@@ -203,6 +306,7 @@ public:
           wRects(*this),
           wShapes(*this),
           wLeft(*this, this),
+          wRezHandle(*this),
           curWidget(nullptr)
     {
         wColor.hide();
@@ -231,6 +335,8 @@ public:
         wShapes.setSize(size);
 
         wLeft.setSize(73, height-4);
+        wRezHandle.setX(width-wRezHandle.getWidth());
+        wRezHandle.setY(height-wRezHandle.getHeight());
 
         Window::onReshape(width, height);
     }
@@ -269,7 +375,8 @@ private:
     ExampleImagesWidget wImages;
     ExampleRectanglesWidget wRects;
     ExampleShapesWidget wShapes;
-    LeftSizeWidget wLeft;
+    LeftSideWidget wLeft;
+    ResizeHandle wRezHandle;
 
     Widget* curWidget;
 };
