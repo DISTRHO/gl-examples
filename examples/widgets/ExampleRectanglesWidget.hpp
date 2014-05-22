@@ -93,9 +93,9 @@ protected:
         }
     }
 
-    bool onMouse(int button, bool press, int x, int y) override
+    bool onMouse(const MouseEvent& ev) override
     {
-        if (button != 1 || ! press)
+        if (ev.button != 1 || ! ev.press)
             return false;
 
         const int width  = getWidth();
@@ -114,7 +114,7 @@ protected:
             // 1st
             r.setY(3);
 
-            if (r.contains(x, y))
+            if (r.contains(ev.pos))
             {
                 fClicked[0+i] = !fClicked[0+i];
                 repaint();
@@ -124,7 +124,7 @@ protected:
             // 2nd
             r.setY(3 + height/3);
 
-            if (r.contains(x, y))
+            if (r.contains(ev.pos))
             {
                 fClicked[3+i] = !fClicked[3+i];
                 repaint();
@@ -134,7 +134,7 @@ protected:
             // 3rd
             r.setY(3 + height*2/3);
 
-            if (r.contains(x, y))
+            if (r.contains(ev.pos))
             {
                 fClicked[6+i] = !fClicked[6+i];
                 repaint();

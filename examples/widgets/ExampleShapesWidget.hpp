@@ -81,8 +81,11 @@ protected:
         cir.drawOutline();
     }
 
-    void onReshape(int width, int height) override
+    void onResize(const ResizeEvent& ev) override
     {
+        const int width  = ev.size.getWidth();
+        const int height = ev.size.getHeight();
+
         // background
         bg = Rectangle<int>(0, 0, width, height);
 

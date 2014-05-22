@@ -106,11 +106,11 @@ protected:
         img4.drawAt(pad, pad + 3 + iconSize*3);
     }
 
-    bool onMouse(int button, bool press, int x, int y) override
+    bool onMouse(const MouseEvent& ev) override
     {
-        if (button != 1 || ! press)
+        if (ev.button != 1 || ! ev.press)
             return false;
-        if (! contains(x, y))
+        if (! contains(ev.pos))
             return false;
 
         const int iconSize = getWidth();
@@ -119,7 +119,7 @@ protected:
         {
             bgIcon.setY(i*iconSize + i + 1);
 
-            if (bgIcon.contains(x, y))
+            if (bgIcon.contains(ev.pos))
             {
                 curPage = i;
                 callback->curPageChanged(i);
@@ -131,9 +131,9 @@ protected:
         return true;
     }
 
-    bool onMotion(int x, int y) override
+    bool onMotion(const MotionEvent& ev) override
     {
-        if (contains(x, y))
+        if (contains(ev.pos))
         {
             const int iconSize = getWidth();
 
@@ -141,7 +141,7 @@ protected:
             {
                 bgIcon.setY(i*iconSize + i + 1);
 
-                if (bgIcon.contains(x, y))
+                if (bgIcon.contains(ev.pos))
                 {
                     if (curHover == i)
                         return true;
@@ -170,9 +170,12 @@ protected:
         }
     }
 
-    void onReshape(int width, int height) override
+    void onResize(const ResizeEvent& ev) override
     {
-        bg.setSize(width, height);
+        const int width  = ev.size.getWidth();
+        const int height = ev.size.getHeight();
+
+        bg.setSize(ev.size);
 
         bgIcon.setWidth(width-2);
         bgIcon.setHeight(width-2);
@@ -189,6 +192,7 @@ private:
     Image img1, img2, img3, img4;
 };
 
+#if 0
 // ------------------------------------------------------
 // Resize handle
 
@@ -256,8 +260,8 @@ protected:
         if (! press)
             return false;
 
-        fLastX = x+getX();
-        fLastY = y+getY();
+        fLastX = x+getAbsoluteX();
+        fLastY = y+getAbsoluteY();
         fMouseUnder = true;
         return true;
     }
@@ -267,8 +271,8 @@ protected:
         if (! fMouseUnder)
             return false;
 
-        x += getX();
-        y += getY();
+        x += getAbsoluteX();
+        y += getAbsoluteY();
 
         const int movedX = x - fLastX;
         const int movedY = y - fLastY;
@@ -291,6 +295,7 @@ protected:
     int   fLastX, fLastY;
     Line<float> fLine1, fLine2, fLine3;
 };
+#endif
 
 // ------------------------------------------------------
 // Our Demo Window
@@ -306,7 +311,7 @@ public:
           wRects(*this),
           wShapes(*this),
           wLeft(*this, this),
-          wRezHandle(*this),
+          //wRezHandle(*this),
           curWidget(nullptr)
     {
         wColor.hide();
@@ -314,11 +319,11 @@ public:
         wRects.hide();
         wShapes.hide();
 
-        wColor.setX(80);
-        wImages.setX(80);
-        wRects.setX(80);
-        wShapes.setX(80);
-        wLeft.setPos(2, 2);
+        wColor.setAbsoluteX(80);
+        wImages.setAbsoluteX(80);
+        wRects.setAbsoluteX(80);
+        wShapes.setAbsoluteX(80);
+        wLeft.setAbsolutePos(2, 2);
 
         setSize(600, 500);
         setTitle("DGL Demo");
@@ -335,8 +340,8 @@ public:
         wShapes.setSize(size);
 
         wLeft.setSize(73, height-4);
-        wRezHandle.setX(width-wRezHandle.getWidth());
-        wRezHandle.setY(height-wRezHandle.getHeight());
+        //wRezHandle.setAbsoluteX(width-wRezHandle.getWidth());
+        //wRezHandle.setAbsoluteY(height-wRezHandle.getHeight());
 
         Window::onReshape(width, height);
     }
@@ -376,7 +381,7 @@ private:
     ExampleRectanglesWidget wRects;
     ExampleShapesWidget wShapes;
     LeftSideWidget wLeft;
-    ResizeHandle wRezHandle;
+    //ResizeHandle wRezHandle;
 
     Widget* curWidget;
 };
