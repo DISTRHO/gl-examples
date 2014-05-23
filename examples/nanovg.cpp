@@ -77,14 +77,14 @@ struct TimePOSIX {
             return (uint64_t) tv.tv_sec * (uint64_t) 1000000 + (uint64_t) tv.tv_usec;
         }
     }
+
+    double getTime()
+    {
+        return (double)(getRawTime() - base) * resolution;
+    }
 };
 
 static TimePOSIX gTime;
-
-double glfwGetTime()
-{
-    return (double)(gTime.getRawTime() - gTime.base) * gTime.resolution;
-}
 #endif
 
 // ------------------------------------------------------
@@ -113,6 +113,16 @@ public:
           fContext(nullptr)
     {
         parent.addIdleCallback(this);
+//             init = false;
+
+            initGraph(&fPerf, GRAPH_RENDER_FPS, "Frame Time");
+
+            fContext = nvgCreateGL2(512, 512, NVG_ANTIALIAS);
+            DISTRHO_SAFE_ASSERT_RETURN(fContext != nullptr,);
+
+            loadDemoData(fContext, &fData);
+
+            prevt = gTime.getTime();
     }
 
     ~NanoVGExampleWidget() override
@@ -132,28 +142,12 @@ protected:
 
     void onDisplay() override
     {
-        static bool init = true;
-
-        if (init)
-        {
-            init = false;
-
-            initGraph(&fPerf, GRAPH_RENDER_FPS, "Frame Time");
-
-            fContext = nvgCreateGL2(512, 512, NVG_ANTIALIAS);
-            DISTRHO_SAFE_ASSERT_RETURN(fContext != nullptr,);
-
-            loadDemoData(fContext, &fData);
-
-            prevt = glfwGetTime();
-        }
-
         const int winWidth  = getWidth();
         const int winHeight = getHeight();
 
         double t, dt;
 
-        t = glfwGetTime();
+        t = gTime.getTime();
         dt = t - prevt;
         prevt = t;
         updateGraph(&fPerf, dt);
