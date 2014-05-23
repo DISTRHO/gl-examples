@@ -16,9 +16,9 @@ WINDRES ?= windres
 # --------------------------------------------------------------
 
 ifeq ($(WIN32),true)
-TARGETS = app.exe color.exe demo.exe images.exe rectangles.exe shapes.exe
+TARGETS = app.exe color.exe demo.exe images.exe nanovg.exe rectangles.exe shapes.exe
 else
-TARGETS = app color demo images rectangles shapes
+TARGETS = app color demo images nanovg rectangles shapes
 endif
 
 # --------------------------------------------------------------
@@ -51,6 +51,9 @@ demo: demo.cpp widgets/* ../dpf/dgl/*
 images: images.cpp images_res/* ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
+nanovg: nanovg.cpp nanovg.a nanovg_res/* nanovg_src/* ../dpf/dgl/*
+	$(CXX) $< nanovg.a $(BUILD_CXX_FLAGS) -Inanovg_src $(LINK_FLAGS) -o $@
+
 rectangles: rectangles.cpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
@@ -72,6 +75,12 @@ text: text.cpp ../dpf/dgl/*
 
 %.exe: %.cpp win32/distrho.o
 	$(CXX) $^ $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -mwindows -o $@
+
+nanovg.a: nanovg_src/*
+	$(CC) nanovg_src/nanovg.c    -c -o nanovg_src/nanovg.c.o
+	$(CC) nanovg_src/stb_image.c -c -o nanovg_src/stb_image.c.o
+	rm -f nanovg.a
+	ar crs nanovg.a nanovg_src/*.o
 
 win32/distrho.o: win32/distrho.rc
 	$(WINDRES) -i $< -o $@ -O coff
