@@ -1,15 +1,15 @@
 #ifndef DEMO_H
 #define DEMO_H
 
-#include "nanovg.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+struct NVGcontext;
+
 struct DemoData {
-	int fontNormal, fontBold, fontIcons; 
-	int images[12];
+    int fontNormal, fontBold, fontIcons;
+    int images[12];
 };
 
 int loadDemoData(struct NVGcontext* vg, struct DemoData* data);

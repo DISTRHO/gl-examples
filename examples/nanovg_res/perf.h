@@ -1,11 +1,11 @@
 #ifndef PERF_H
 #define PERF_H
 
-#include "nanovg.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+struct NVGcontext;
 
 enum GraphrenderStyle {
     GRAPH_RENDER_FPS,
@@ -14,10 +14,10 @@ enum GraphrenderStyle {
 
 #define GRAPH_HISTORY_COUNT 100
 struct PerfGraph {
-	int style;
-	char name[32];
-	float values[GRAPH_HISTORY_COUNT];
-	int head;
+    int style;
+    char name[32];
+    float values[GRAPH_HISTORY_COUNT];
+    int head;
 };
 
 void initGraph(struct PerfGraph* fps, int style, const char* name);
@@ -27,9 +27,9 @@ float getGraphAverage(struct PerfGraph* fps);
 
 #define GPU_QUERY_COUNT 5
 struct GPUtimer {
-	int supported;
-	int cur, ret;
-	unsigned int queries[GPU_QUERY_COUNT];
+    int supported;
+    int cur, ret;
+    unsigned int queries[GPU_QUERY_COUNT];
 };
 
 void initGPUTimer(struct GPUtimer* timer);

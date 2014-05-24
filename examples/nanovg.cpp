@@ -22,16 +22,16 @@
 // ------------------------------------------------------
 // NanoVG Stuff
 
-#define NANOVG_GL2_IMPLEMENTATION
-#include "nanovg_src/nanovg_gl.h"
+#include "NanoWidget.hpp"
+
 #include "nanovg_res/demo.h"
 #include "nanovg_res/perf.h"
 
-#include <sys/time.h>
-#include <time.h>
-
 // ------------------------------------------------------
 // get time
+
+#include <sys/time.h>
+#include <time.h>
 
 #ifdef DISTRHO_OS_WINDOWS
 #else
@@ -104,34 +104,29 @@ int my = 0;
 
 double prevt = 0;
 
-class NanoVGExampleWidget : public Widget,
-                            public IdleCallback
+class NanoExampleWidget : public NanoWidget,
+                          public IdleCallback
 {
 public:
-    NanoVGExampleWidget(Window& parent)
-        : Widget(parent),
-          fContext(nullptr)
+    NanoExampleWidget(Window& parent)
+        : NanoWidget(parent),
+          fContext(getContext())
     {
         parent.addIdleCallback(this);
-//             init = false;
 
-            initGraph(&fPerf, GRAPH_RENDER_FPS, "Frame Time");
+        initGraph(&fPerf, GRAPH_RENDER_FPS, "Frame Time");
 
-            fContext = nvgCreateGL2(512, 512, NVG_ANTIALIAS);
-            DISTRHO_SAFE_ASSERT_RETURN(fContext != nullptr,);
+        loadDemoData(fContext, &fData);
 
-            loadDemoData(fContext, &fData);
-
-            prevt = gTime.getTime();
+        prevt = gTime.getTime();
     }
 
-    ~NanoVGExampleWidget() override
+    ~NanoExampleWidget() override
     {
         if (fContext == nullptr)
             return;
 
         freeDemoData(fContext, &fData);
-        nvgDeleteGL2(fContext);
     }
 
 protected:
@@ -142,6 +137,9 @@ protected:
 
     void onDisplay() override
     {
+        if (fContext == nullptr)
+            return;
+
         const int winWidth  = getWidth();
         const int winHeight = getHeight();
 
@@ -153,18 +151,18 @@ protected:
         updateGraph(&fPerf, dt);
 
         if (premult)
-            glClearColor(0,0,0,0);
+            glClearColor(0, 0, 0, 0);
         else
             glClearColor(0.3f, 0.3f, 0.32f, 1.0f);
 
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 
-        nvgBeginFrame(fContext, winWidth, winHeight, 1.0f, premult ? NVG_PREMULTIPLIED_ALPHA : NVG_STRAIGHT_ALPHA);
+        beginFrame(premult ? PREMULTIPLIED_ALPHA : STRAIGHT_ALPHA);
 
         renderDemo(fContext, mx, my, winWidth, winHeight, t, blowup, &fData);
         renderGraph(fContext, 5, 5, &fPerf);
 
-        nvgEndFrame(fContext);
+        endFrame();
 
         if (screenshot)
         {
@@ -219,7 +217,7 @@ private:
 int main()
 {
     StandaloneWindow swin;
-    NanoVGExampleWidget widget(swin);
+    NanoExampleWidget widget(swin);
 
     swin.setSize(1000, 600);
     swin.setTitle("NanoVG");
