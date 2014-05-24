@@ -42,22 +42,25 @@ debug:
 app: app.cpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
-color: color.cpp ../dpf/dgl/*
+color: color.cpp widgets/ExampleColorWidget.hpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
 demo: demo.cpp widgets/* ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
-images: images.cpp images_res/* ../dpf/dgl/*
+images: images.cpp widgets/ExampleImagesWidget.hpp images_res/* ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
 nanovg: nanovg.cpp nanovg_res/* ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) -I../dpf/dgl/src/nanovg $(LINK_FLAGS) -o $@
 
-rectangles: rectangles.cpp ../dpf/dgl/*
+rectangles: rectangles.cpp widgets/ExampleRectanglesWidget.hpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
-shapes: shapes.cpp ../dpf/dgl/*
+shapes: shapes.cpp widgets/ExampleShapesWidget.hpp ../dpf/dgl/*
+	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
+
+text: text.cpp widgets/ExampleTextWidget.hpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
 # --------------------------------------------------------------
