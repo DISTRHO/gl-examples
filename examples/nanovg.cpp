@@ -22,7 +22,7 @@
 // ------------------------------------------------------
 // NanoVG Stuff
 
-#include "NanoWidget.hpp"
+#include "NanoVG.hpp"
 
 #include "nanovg_res/demo.h"
 #include "nanovg_res/perf.h"
@@ -104,12 +104,13 @@ int my = 0;
 
 double prevt = 0;
 
-class NanoExampleWidget : public NanoWidget,
-                          public IdleCallback
+class NanoExampleWidget : public Widget,
+                          public IdleCallback,
+                          public NanoVG
 {
 public:
     NanoExampleWidget(Window& parent)
-        : NanoWidget(parent),
+        : Widget(parent),
           fContext(getContext())
     {
         parent.addIdleCallback(this);
@@ -157,7 +158,7 @@ protected:
 
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 
-        beginFrame(premult ? PREMULTIPLIED_ALPHA : STRAIGHT_ALPHA);
+        beginFrame(winWidth, winHeight, premult ? PREMULTIPLIED_ALPHA : STRAIGHT_ALPHA);
 
         renderDemo(fContext, mx, my, winWidth, winHeight, t, blowup, &fData);
         renderGraph(fContext, 5, 5, &fPerf);
