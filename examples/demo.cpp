@@ -23,6 +23,7 @@
 #include "widgets/ExampleImagesWidget.hpp"
 #include "widgets/ExampleRectanglesWidget.hpp"
 #include "widgets/ExampleShapesWidget.hpp"
+#include "widgets/ExampleTextWidget.hpp"
 
 // ------------------------------------------------------
 // Images
@@ -44,6 +45,8 @@ using DGL::Size;
 class LeftSideWidget : public Widget
 {
 public:
+    static const int kPageCount = 5;
+
     class Callback
     {
     public:
@@ -62,6 +65,7 @@ public:
         img2.loadFromMemory(ico2Data, ico2Width, ico2Height, GL_BGR);
         img3.loadFromMemory(ico3Data, ico3Width, ico2Height, GL_BGR);
         img4.loadFromMemory(ico4Data, ico4Width, ico4Height, GL_BGR);
+        //img5.loadFromMemory(ico5Data, ico5Width, ico5Height, GL_BGR);
     }
 
 protected:
@@ -104,6 +108,7 @@ protected:
         img2.drawAt(pad, pad + 1 + iconSize);
         img3.drawAt(pad, pad + 2 + iconSize*2);
         img4.drawAt(pad, pad + 3 + iconSize*3);
+        //img5.drawAt(pad, pad + 3 + iconSize*3);
     }
 
     bool onMouse(const MouseEvent& ev) override
@@ -115,7 +120,7 @@ protected:
 
         const int iconSize = getWidth();
 
-        for (int i=0; i<4; ++i)
+        for (int i=0; i<kPageCount; ++i)
         {
             bgIcon.setY(i*iconSize + i + 1);
 
@@ -137,7 +142,7 @@ protected:
         {
             const int iconSize = getWidth();
 
-            for (int i=0; i<4; ++i)
+            for (int i=0; i<kPageCount; ++i)
             {
                 bgIcon.setY(i*iconSize + i + 1);
 
@@ -189,7 +194,7 @@ private:
     int curPage, curHover;
     Rectangle<int> bg, bgIcon;
     Line<int> lineSep;
-    Image img1, img2, img3, img4;
+    Image img1, img2, img3, img4, img5;
 };
 
 #if 0
@@ -310,6 +315,7 @@ public:
           wImages(*this),
           wRects(*this),
           wShapes(*this),
+          wText(*this),
           wLeft(*this, this),
           //wRezHandle(*this),
           curWidget(nullptr)
@@ -318,11 +324,13 @@ public:
         wImages.hide();
         wRects.hide();
         wShapes.hide();
+        wText.hide();
 
         wColor.setAbsoluteX(80);
         wImages.setAbsoluteX(80);
         wRects.setAbsoluteX(80);
         wShapes.setAbsoluteX(80);
+        wText.setAbsoluteX(80);
         wLeft.setAbsolutePos(2, 2);
 
         setSize(600, 500);
@@ -338,6 +346,7 @@ public:
         wImages.setSize(size);
         wRects.setSize(size);
         wShapes.setSize(size);
+        wText.setSize(size);
 
         wLeft.setSize(73, height-4);
         //wRezHandle.setAbsoluteX(width-wRezHandle.getWidth());
@@ -369,6 +378,10 @@ protected:
         case 3:
             curWidget = &wShapes;
             break;
+            break;
+        case 4:
+            curWidget = &wText;
+            break;
         }
 
         if (curWidget != nullptr)
@@ -380,6 +393,7 @@ private:
     ExampleImagesWidget wImages;
     ExampleRectanglesWidget wRects;
     ExampleShapesWidget wShapes;
+    ExampleTextWidget wText;
     LeftSideWidget wLeft;
     //ResizeHandle wRezHandle;
 

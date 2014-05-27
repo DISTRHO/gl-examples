@@ -16,9 +16,9 @@ WINDRES ?= windres
 # --------------------------------------------------------------
 
 ifeq ($(WIN32),true)
-TARGETS = app.exe color.exe demo.exe images.exe nanovg.exe rectangles.exe shapes.exe
+TARGETS = app.exe color.exe demo.exe images.exe nanovg.exe rectangles.exe shapes.exe text.exe
 else
-TARGETS = app color demo images nanovg rectangles shapes
+TARGETS = app color demo images nanovg rectangles shapes text
 endif
 
 # --------------------------------------------------------------
@@ -70,9 +70,6 @@ cairo: cairo.cpp ../dpf/dgl/*
 
 qt-embed: qt-embed.cpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(shell pkg-config --cflags --libs QtCore QtGui) $(LINK_FLAGS) -o $@
-
-text: text.cpp ../dpf/dgl/*
-	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
 # --------------------------------------------------------------
 

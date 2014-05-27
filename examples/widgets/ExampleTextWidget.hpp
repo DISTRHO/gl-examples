@@ -20,7 +20,7 @@
 // ------------------------------------------------------
 // DGL Stuff
 
-#include "NanoWidget.hpp"
+#include "NanoVG.hpp"
 
 // ------------------------------------------------------
 // use namespace
@@ -42,13 +42,10 @@ public:
     }
 
 protected:
-    void onDisplay() override
+    void onNanoDisplay() override
     {
         const int width  = getWidth();
         const int height = getHeight();
-
-        beginFrame();
-        save();
 
         fontSize(40.0f);
         textAlign(Align(ALIGN_CENTER|ALIGN_MIDDLE));
@@ -61,9 +58,6 @@ protected:
 
         fillColor(RGBA(0,0,0,220));
         textBox(10, height/2, width-20, "Hello World!", nullptr);
-
-        restore();
-        endFrame();
     }
 
 private:

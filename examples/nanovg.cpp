@@ -104,13 +104,12 @@ int my = 0;
 
 double prevt = 0;
 
-class NanoExampleWidget : public Widget,
-                          public IdleCallback,
-                          public NanoVG
+class NanoExampleWidget : public NanoWidget,
+                          public IdleCallback
 {
 public:
     NanoExampleWidget(Window& parent)
-        : Widget(parent),
+        : NanoWidget(parent),
           fContext(getContext())
     {
         parent.addIdleCallback(this);
@@ -136,7 +135,7 @@ protected:
         repaint();
     }
 
-    void onDisplay() override
+    void onNanoDisplay() override
     {
         if (fContext == nullptr)
             return;
@@ -158,12 +157,8 @@ protected:
 
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 
-        beginFrame(winWidth, winHeight, premult ? PREMULTIPLIED_ALPHA : STRAIGHT_ALPHA);
-
         renderDemo(fContext, mx, my, winWidth, winHeight, t, blowup, &fData);
         renderGraph(fContext, 5, 5, &fPerf);
-
-        endFrame();
 
         if (screenshot)
         {
