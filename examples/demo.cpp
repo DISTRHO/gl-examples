@@ -61,6 +61,9 @@ public:
           curPage(0),
           curHover(-1)
     {
+        // for text
+        font = nvg.createFont("sans", "./nanovg_res/Roboto-Regular.ttf");
+
         using namespace DemoArtwork;
         img1.loadFromMemory(ico1Data, ico1Width, ico1Height, GL_BGR);
         img2.loadFromMemory(ico2Data, ico2Width, ico2Height, GL_BGR);
@@ -110,6 +113,19 @@ protected:
         img3.drawAt(pad, pad + 6 + iconSize*2);
         img4.drawAt(pad, pad + 9 + iconSize*3);
         img5.drawAt(pad, pad + 12 + iconSize*4);
+
+        // draw some text
+        nvg.beginFrame(this);
+
+        nvg.fontSize(23.0f);
+        nvg.textAlign(NanoVG::ALIGN_LEFT|NanoVG::ALIGN_TOP);
+        //nvg.textLineHeight(20.0f);
+
+        nvg.fillColor(nvg.RGBA(220,220,220,220));
+        nvg.textBox(10, 420, iconSize, "Haha,", nullptr);
+        nvg.textBox(15, 440, iconSize, "Look!", nullptr);
+
+        nvg.endFrame();
     }
 
     bool onMouse(const MouseEvent& ev) override
@@ -194,6 +210,10 @@ private:
     Rectangle<int> bgIcon;
     Line<int> lineSep;
     Image img1, img2, img3, img4, img5;
+
+    // for text
+    NanoVG nvg;
+    NanoVG::FontId font;
 };
 
 #if 0
