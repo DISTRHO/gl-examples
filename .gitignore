@@ -14,6 +14,7 @@ examples/color
 examples/demo
 examples/images
 examples/nanovg
+examples/nanovg2
 examples/qt-embed
 examples/rectangles
 examples/shapes

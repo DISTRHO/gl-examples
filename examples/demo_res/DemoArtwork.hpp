@@ -24,6 +24,11 @@ namespace DemoArtwork
     const unsigned int ico4DataSize = 6912;
     const unsigned int ico4Width    = 48;
     const unsigned int ico4Height   = 48;
+
+    extern const char* ico5Data;
+    const unsigned int ico5DataSize = 6912;
+    const unsigned int ico5Width    = 48;
+    const unsigned int ico5Height   = 48;
 }
 
 #endif // BINARY_DEMOARTWORK_HPP

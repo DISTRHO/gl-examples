@@ -66,7 +66,7 @@ public:
         img2.loadFromMemory(ico2Data, ico2Width, ico2Height, GL_BGR);
         img3.loadFromMemory(ico3Data, ico3Width, ico2Height, GL_BGR);
         img4.loadFromMemory(ico4Data, ico4Width, ico4Height, GL_BGR);
-        //img5.loadFromMemory(ico5Data, ico5Width, ico5Height, GL_BGR);
+        img5.loadFromMemory(ico5Data, ico5Width, ico5Height, GL_BGR);
     }
 
 protected:
@@ -109,7 +109,7 @@ protected:
         img2.drawAt(pad, pad + 3 + iconSize);
         img3.drawAt(pad, pad + 6 + iconSize*2);
         img4.drawAt(pad, pad + 9 + iconSize*3);
-        //img5.drawAt(pad, pad + 12 + iconSize*4);
+        img5.drawAt(pad, pad + 12 + iconSize*4);
     }
 
     bool onMouse(const MouseEvent& ev) override
