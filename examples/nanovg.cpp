@@ -22,70 +22,8 @@
 // ------------------------------------------------------
 // NanoVG Stuff
 
-#include "NanoVG.hpp"
-
+#include "widgets/NanoPerfWidget.hpp"
 #include "nanovg_res/demo.h"
-#include "nanovg_res/perf.h"
-
-// ------------------------------------------------------
-// get time
-
-#include <sys/time.h>
-#include <time.h>
-
-#ifdef DISTRHO_OS_WINDOWS
-#else
-struct TimePOSIX {
-    bool monotonic;
-    double resolution;
-    uint64_t base;
-
-    TimePOSIX()
-        : monotonic(false),
-          resolution(1e-6),
-          base(0)
-    {
-#if defined(CLOCK_MONOTONIC)
-        struct timespec ts;
-
-        if (::clock_gettime(CLOCK_MONOTONIC, &ts) == 0)
-        {
-            monotonic = true;
-            resolution = 1e-9;
-        }
-#endif
-
-        base = getRawTime();
-    }
-
-    uint64_t getRawTime()
-    {
-#if defined(CLOCK_MONOTONIC)
-        if (monotonic)
-        {
-            struct timespec ts;
-
-            ::clock_gettime(CLOCK_MONOTONIC, &ts);
-            return (uint64_t) ts.tv_sec * (uint64_t) 1000000000 + (uint64_t) ts.tv_nsec;
-        }
-        else
-#endif
-        {
-            struct timeval tv;
-
-            ::gettimeofday(&tv, NULL);
-            return (uint64_t) tv.tv_sec * (uint64_t) 1000000 + (uint64_t) tv.tv_usec;
-        }
-    }
-
-    double getTime()
-    {
-        return (double)(getRawTime() - base) * resolution;
-    }
-};
-
-static TimePOSIX gTime;
-#endif
 
 // ------------------------------------------------------
 // use namespace
@@ -102,8 +40,6 @@ int premult = 0;
 int mx = 0;
 int my = 0;
 
-double prevt = 0;
-
 class NanoExampleWidget : public NanoWidget,
                           public IdleCallback
 {
@@ -114,11 +50,7 @@ public:
     {
         parent.addIdleCallback(this);
 
-        initGraph(&fPerf, GRAPH_RENDER_FPS, "Frame Time");
-
         loadDemoData(fContext, &fData);
-
-        prevt = gTime.getTime();
     }
 
     ~NanoExampleWidget() override
@@ -143,13 +75,6 @@ protected:
         const int winWidth  = getWidth();
         const int winHeight = getHeight();
 
-        double t, dt;
-
-        t = gTime.getTime();
-        dt = t - prevt;
-        prevt = t;
-        updateGraph(&fPerf, dt);
-
         if (premult)
             glClearColor(0, 0, 0, 0);
         else
@@ -157,8 +82,7 @@ protected:
 
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
 
-        renderDemo(fContext, mx, my, winWidth, winHeight, t, blowup, &fData);
-        renderGraph(fContext, 5, 5, &fPerf);
+        renderDemo(fContext, mx, my, winWidth, winHeight, gTime.getTime(), blowup, &fData);
 
         if (screenshot)
         {
@@ -204,7 +128,39 @@ protected:
 private:
     NVGcontext* fContext;
     DemoData    fData;
-    PerfGraph   fPerf;
+
+};
+
+// -----------------------------------------------------------------------
+// We need a custom window for multiple widgets
+
+class NanoExampleWindow : public Window
+{
+public:
+    NanoExampleWindow(App& app)
+        : Window(app),
+          fDemo(*this),
+          fPerf(*this, NanoPerfWidget::RENDER_FPS, "Frame Time")
+    {
+        fPerf.setAbsolutePos(5, 5);
+        //fPerf.hide();
+
+        setSize(1000, 600);
+        setTitle("NanoVG");
+    }
+
+protected:
+    void onReshape(int width, int height)
+    {
+        fDemo.setSize(width, height);
+        //fDemo.setAbsolutePos(10, height-fDemo.getHeight()-50);
+
+        Window::onReshape(width, height);
+    }
+
+private:
+    NanoExampleWidget fDemo;
+    NanoPerfWidget    fPerf;
 };
 
 // ------------------------------------------------------
@@ -212,12 +168,11 @@ private:
 
 int main()
 {
-    StandaloneWindow swin;
-    NanoExampleWidget widget(swin);
+    App app;
+    NanoExampleWindow win(app);
 
-    swin.setSize(1000, 600);
-    swin.setTitle("NanoVG");
-    swin.exec();
+    win.show();
+    app.exec();
 
     return 0;
 }
@@ -226,7 +181,6 @@ int main()
 
 extern "C" {
 #include "nanovg_res/demo.c"
-#include "nanovg_res/perf.c"
 }
 
 // ------------------------------------------------------

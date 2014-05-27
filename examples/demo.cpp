@@ -24,6 +24,7 @@
 #include "widgets/ExampleRectanglesWidget.hpp"
 #include "widgets/ExampleShapesWidget.hpp"
 #include "widgets/ExampleTextWidget.hpp"
+#include "widgets/NanoPerfWidget.hpp"
 
 // ------------------------------------------------------
 // Images
@@ -71,12 +72,12 @@ public:
 protected:
     void onDisplay() override
     {
-        const int iconSize = getWidth();
+        const int iconSize = bgIcon.getWidth();
 
         glColor3f(0.027f, 0.027f, 0.027f);
-        bg.draw();
+        Rectangle<int>(0, 0, getSize()).draw();
 
-        bgIcon.setY(curPage*iconSize + curPage + 1);
+        bgIcon.setY(curPage*iconSize + curPage*3);
 
         glColor3f(0.129f, 0.129f, 0.129f);
         bgIcon.draw();
@@ -86,7 +87,7 @@ protected:
 
         if (curHover != curPage && curHover != -1)
         {
-            Rectangle<int> rHover(1, curHover*iconSize + curHover + 1, iconSize-2, iconSize-2);
+            Rectangle<int> rHover(1, curHover*iconSize + curHover*3, iconSize-2, iconSize-2);
 
             glColor3f(0.071f, 0.071f, 0.071f);
             rHover.draw();
@@ -105,10 +106,10 @@ protected:
         const int pad = iconSize/2 - DemoArtwork::ico1Width/2;
 
         img1.drawAt(pad, pad);
-        img2.drawAt(pad, pad + 1 + iconSize);
-        img3.drawAt(pad, pad + 2 + iconSize*2);
-        img4.drawAt(pad, pad + 3 + iconSize*3);
-        //img5.drawAt(pad, pad + 3 + iconSize*3);
+        img2.drawAt(pad, pad + 3 + iconSize);
+        img3.drawAt(pad, pad + 6 + iconSize*2);
+        img4.drawAt(pad, pad + 9 + iconSize*3);
+        //img5.drawAt(pad, pad + 12 + iconSize*4);
     }
 
     bool onMouse(const MouseEvent& ev) override
@@ -118,11 +119,11 @@ protected:
         if (! contains(ev.pos))
             return false;
 
-        const int iconSize = getWidth();
+        const int iconSize = bgIcon.getWidth();
 
         for (int i=0; i<kPageCount; ++i)
         {
-            bgIcon.setY(i*iconSize + i + 1);
+            bgIcon.setY(i*iconSize + i*3);
 
             if (bgIcon.contains(ev.pos))
             {
@@ -140,11 +141,11 @@ protected:
     {
         if (contains(ev.pos))
         {
-            const int iconSize = getWidth();
+            const int iconSize = bgIcon.getWidth();
 
             for (int i=0; i<kPageCount; ++i)
             {
-                bgIcon.setY(i*iconSize + i + 1);
+                bgIcon.setY(i*iconSize + i*3);
 
                 if (bgIcon.contains(ev.pos))
                 {
@@ -180,19 +181,17 @@ protected:
         const int width  = ev.size.getWidth();
         const int height = ev.size.getHeight();
 
-        bg.setSize(ev.size);
+        bgIcon.setWidth(width-4);
+        bgIcon.setHeight(width-4);
 
-        bgIcon.setWidth(width-2);
-        bgIcon.setHeight(width-2);
-
-        lineSep.setStartX(width+2);
-        lineSep.setEndPos(width+2, height);
+        lineSep.setStartPos(width, 0);
+        lineSep.setEndPos(width, height);
     }
 
 private:
     Callback* const callback;
     int curPage, curHover;
-    Rectangle<int> bg, bgIcon;
+    Rectangle<int> bgIcon;
     Line<int> lineSep;
     Image img1, img2, img3, img4, img5;
 };
@@ -318,6 +317,7 @@ public:
           wText(*this),
           wLeft(*this, this),
           //wRezHandle(*this),
+          wPerf(*this, NanoPerfWidget::RENDER_FPS, "TESTING!!"),
           curWidget(nullptr)
     {
         wColor.hide();
@@ -325,13 +325,15 @@ public:
         wRects.hide();
         wShapes.hide();
         wText.hide();
+        //wPerf.hide();
 
-        wColor.setAbsoluteX(80);
-        wImages.setAbsoluteX(80);
-        wRects.setAbsoluteX(80);
-        wShapes.setAbsoluteX(80);
-        wText.setAbsoluteX(80);
+        wColor.setAbsoluteX(81);
+        wImages.setAbsoluteX(81);
+        wRects.setAbsoluteX(81);
+        wShapes.setAbsoluteX(81);
+        wText.setAbsoluteX(81);
         wLeft.setAbsolutePos(2, 2);
+        wPerf.setAbsoluteY(5);
 
         setSize(600, 500);
         setTitle("DGL Demo");
@@ -341,16 +343,18 @@ public:
 
     void onReshape(int width, int height) override
     {
-        Size<int> size(width-80, height);
+        Size<int> size(width-81, height);
         wColor.setSize(size);
         wImages.setSize(size);
         wRects.setSize(size);
         wShapes.setSize(size);
         wText.setSize(size);
 
-        wLeft.setSize(73, height-4);
+        wLeft.setSize(80-4, height-4);
         //wRezHandle.setAbsoluteX(width-wRezHandle.getWidth());
         //wRezHandle.setAbsoluteY(height-wRezHandle.getHeight());
+
+        wPerf.setAbsoluteX(width-wPerf.getWidth()-5);
 
         Window::onReshape(width, height);
     }
@@ -378,7 +382,6 @@ protected:
         case 3:
             curWidget = &wShapes;
             break;
-            break;
         case 4:
             curWidget = &wText;
             break;
@@ -396,6 +399,7 @@ private:
     ExampleTextWidget wText;
     LeftSideWidget wLeft;
     //ResizeHandle wRezHandle;
+    NanoPerfWidget wPerf;
 
     Widget* curWidget;
 };
