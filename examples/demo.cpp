@@ -370,7 +370,7 @@ public:
         wShapes.setSize(size);
         wText.setSize(size);
 
-        wLeft.setSize(80-4, height-4);
+        wLeft.setSize(81-4, height-4);
         //wRezHandle.setAbsoluteX(width-wRezHandle.getWidth());
         //wRezHandle.setAbsoluteY(height-wRezHandle.getHeight());
 

@@ -56,7 +56,7 @@ protected:
         roundedRect(10, height/4+10, width-20, height/2-20, 3);
         fill();
 
-        fillColor(RGBA(0,0,0,220));
+        fillColor(RGBA(0,200,0,220));
         textBox(10, height/2, width-20, "Hello World!", nullptr);
     }
 
