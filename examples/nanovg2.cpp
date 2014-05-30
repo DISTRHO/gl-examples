@@ -54,7 +54,7 @@ public:
             std::snprintf(file, 128, "./nanovg_res/images/image%d.jpg", i+1);
             fImages[i] = createImage(file);
 
-            if (! fImages[i].isValid())
+            if (fImages[i] == nullptr)
             {
                 d_stdout("Could not load %s.", file);
                 return;
@@ -120,7 +120,7 @@ protected:
 
 private:
     FontId fFontNormal, fFontBold, fFontIcons;
-    NanoImage fImages[12];
+    ScopedPointer<NanoImage> fImages[12];
 
     void drawEyes(float x, float y, float w, float h, float mx, float my, float t)
     {
