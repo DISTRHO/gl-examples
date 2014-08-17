@@ -72,7 +72,7 @@ cairo: cairo.cpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(shell pkg-config --cflags --libs cairo) $(LINK_FLAGS) -o $@
 
 ntk: ntk.cpp ../dpf/dgl/*
-	$(CXX) $< $(BUILD_CXX_FLAGS) -I../dpf/distrho -Intk_res $(shell pkg-config --cflags --libs ntk_images ntk) $(LINK_FLAGS) -o $@
+	$(CXX) $< $(BUILD_CXX_FLAGS) -I../dpf/distrho -Intk_res $(shell pkg-config --cflags --libs ntk_images ntk liblo jack) $(LINK_FLAGS) -o $@
 
 qt-embed: qt-embed.cpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(shell pkg-config --cflags --libs QtCore QtGui) $(LINK_FLAGS) -o $@

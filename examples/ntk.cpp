@@ -21,12 +21,20 @@
 #include "ntk/NtkWidget.hpp"
 #include "ntk/NtkWindow.hpp"
 
+#include <FL/Fl_Button.H>
+
 // ------------------------------------------------------
 
+#define DISTRHO_PLUGIN_TARGET_DSSI
+
+#include "DistrhoPlugin.hpp"
 #include "DistrhoUI.hpp"
+//#include "DistrhoPluginMain.cpp"
 #include "DistrhoUIMain.cpp"
 
 START_NAMESPACE_DISTRHO
+
+using DGL::NtkWindow;
 
 // ------------------------------------------------------
 // NTK UI Test
@@ -35,8 +43,17 @@ class NtkUiTest : public UI
 {
 public:
     NtkUiTest()
-        : UI()
+        : UI(),
+          but1(10,10,140,25,"Button 1"),
+          but2(10,40,140,25,"Button 2")
     {
+        box(FL_BORDER_BOX);
+        color(46);
+
+        add(but1);
+        add(but2);
+
+        end();
     }
 
     ~NtkUiTest()
@@ -59,10 +76,15 @@ protected:
     }
 
 private:
-    //
+    Fl_Button but1, but2;
 };
 
 // ------------------------------------------------------
+
+Plugin* createPlugin()
+{
+    return nullptr;
+}
 
 UI* createUI()
 {
@@ -75,18 +97,16 @@ END_NAMESPACE_DISTRHO
 
 // ------------------------------------------------------
 
-int main()
+int main2()
 {
     USE_NAMESPACE_DISTRHO;
     USE_NAMESPACE_DGL;
 
-    d_lastUiSampleRate = 44100.0;
-    UI* const ui(createUI());
-    delete ui;
-
     NtkApp app;
     NtkWindow window(app);
 
+    window.setSize(300, 300);
+    window.setTitle("NTK UI Test");
     window.show();
     app.exec();
 
