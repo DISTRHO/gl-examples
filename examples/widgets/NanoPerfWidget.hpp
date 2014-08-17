@@ -26,6 +26,7 @@
 // ------------------------------------------------------
 // use namespace
 
+using DISTRHO::d_string;
 using DGL::IdleCallback;
 using DGL::NanoVG;
 using DGL::NanoWidget;
@@ -148,7 +149,7 @@ protected:
 
         beginPath();
         rect(0, 0, w, h);
-        fillColor(RGBA(0,0,0,128));
+        fillColor(0,0,0,128);
         fill();
 
         beginPath();
@@ -180,7 +181,7 @@ protected:
         }
 
         lineTo(w, h);
-        fillColor(RGBA(255,192,0,128));
+        fillColor(255,192,0,128);
         fill();
 
         fontFace("sans");
@@ -189,7 +190,7 @@ protected:
         {
             fontSize(14.0f);
             textAlign(ALIGN_LEFT|ALIGN_TOP);
-            fillColor(RGBA(240,240,240,192));
+            fillColor(240,240,240,192);
             text(3, 1, fName, nullptr);
         }
 
@@ -197,13 +198,13 @@ protected:
         {
             fontSize(18.0f);
             textAlign(ALIGN_RIGHT|ALIGN_TOP);
-            fillColor(RGBA(240,240,240,255));
+            fillColor(240,240,240,255);
             std::sprintf(str, "%.2f FPS", 1.0f / avg);
             text(w-3, 1, str, nullptr);
 
             fontSize(15.0f);
             textAlign(ALIGN_RIGHT|ALIGN_BOTTOM);
-            fillColor(RGBA(240,240,240,160));
+            fillColor(240,240,240,160);
             std::sprintf(str, "%.2f ms", avg * 1000.0f);
             text(w-3, h-1, str, nullptr);
         }
@@ -211,7 +212,7 @@ protected:
         {
             fontSize(18.0f);
             textAlign(ALIGN_RIGHT|ALIGN_TOP);
-            fillColor(RGBA(240,240,240,255));
+            fillColor(240,240,240,255);
             std::sprintf(str, "%.2f ms", avg * 1000.0f);
             text(w-3, 1, str, nullptr);
         }

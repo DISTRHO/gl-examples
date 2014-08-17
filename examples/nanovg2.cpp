@@ -29,6 +29,7 @@
 // use namespace
 
 using namespace DGL;
+using namespace DISTRHO;
 
 // ------------------------------------------------------
 // NanoVG Example Widget
@@ -75,7 +76,7 @@ protected:
     void onNanoDisplay() override
     {
         const int width  = getWidth();
-        const int height = getHeight();
+        //const int height = getHeight();
         const double t = gTime.getTime();
 
         if (premult)
@@ -135,14 +136,14 @@ private:
         float br = (ex < ey ? ex : ey) * 0.5f;
         float blink = 1 - std::pow(std::sin(t*0.5f),200)*0.8f;
 
-        bg = linearGradient(x,y+h*0.5f,x+w*0.1f,y+h, RGBA(0,0,0,32), RGBA(0,0,0,16));
+        bg = linearGradient(x,y+h*0.5f,x+w*0.1f,y+h, Color(0,0,0,32), Color(0,0,0,16));
         beginPath();
         ellipse(lx+3.0f,ly+16.0f, ex,ey);
         ellipse(rx+3.0f,ry+16.0f, ex,ey);
         fillPaint(bg);
         fill();
 
-        bg = linearGradient(x,y+h*0.25f,x+w*0.1f,y+h, RGBA(220,220,220,255), RGBA(128,128,128,255));
+        bg = linearGradient(x,y+h*0.25f,x+w*0.1f,y+h, Color(220,220,220,255), Color(128,128,128,255));
         beginPath();
         ellipse(lx,ly, ex,ey);
         ellipse(rx,ry, ex,ey);
@@ -159,7 +160,7 @@ private:
         dy *= ey*0.5f;
         beginPath();
         ellipse(lx+dx,ly+dy+ey*0.25f*(1-blink), br,br*blink);
-        fillColor(RGBA(32,32,32,255));
+        fillColor(32,32,32,255);
         fill();
 
         dx = (mx - rx) / (ex * 10);
@@ -172,16 +173,16 @@ private:
         dy *= ey*0.5f;
         beginPath();
         ellipse(rx+dx,ry+dy+ey*0.25f*(1-blink), br,br*blink);
-        fillColor(RGBA(32,32,32,255));
+        fillColor(32,32,32,255);
         fill();
 
-        gloss = radialGradient(lx-ex*0.25f,ly-ey*0.5f, ex*0.1f,ex*0.75f, RGBA(255,255,255,128), RGBA(255,255,255,0));
+        gloss = radialGradient(lx-ex*0.25f,ly-ey*0.5f, ex*0.1f,ex*0.75f, Color(255,255,255,128), Color(255,255,255,0));
         beginPath();
         ellipse(lx,ly, ex,ey);
         fillPaint(gloss);
         fill();
 
-        gloss = radialGradient(rx-ex*0.25f,ry-ey*0.5f, ex*0.1f,ex*0.75f, RGBA(255,255,255,128), RGBA(255,255,255,0));
+        gloss = radialGradient(rx-ex*0.25f,ry-ey*0.5f, ex*0.1f,ex*0.75f, Color(255,255,255,128), Color(255,255,255,0));
         beginPath();
         ellipse(rx,ry, ex,ey);
         fillPaint(gloss);

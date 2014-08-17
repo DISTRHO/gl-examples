@@ -121,7 +121,7 @@ protected:
         nvg.textAlign(NanoVG::ALIGN_LEFT|NanoVG::ALIGN_TOP);
         //nvg.textLineHeight(20.0f);
 
-        nvg.fillColor(nvg.RGBA(220,220,220,220));
+        nvg.fillColor(220,220,220,220);
         nvg.textBox(10, 420, iconSize, "Haha,", nullptr);
         nvg.textBox(15, 440, iconSize, "Look!", nullptr);
 
