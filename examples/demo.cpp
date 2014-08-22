@@ -78,7 +78,7 @@ protected:
         const int iconSize = bgIcon.getWidth();
 
         glColor3f(0.027f, 0.027f, 0.027f);
-        Rectangle<int>(0, 0, getSize()).draw();
+        Rectangle<uint>(0, 0, getSize()).draw();
 
         bgIcon.setY(curPage*iconSize + curPage*3);
 
@@ -361,9 +361,9 @@ public:
         curPageChanged(0);
     }
 
-    void onReshape(int width, int height) override
+    void onReshape(uint width, uint height) override
     {
-        Size<int> size(width-81, height);
+        Size<uint> size(width-81, height);
         wColor.setSize(size);
         wImages.setSize(size);
         wRects.setSize(size);
