@@ -25,6 +25,8 @@
 #include "NanoVG.hpp"
 #include "widgets/NanoPerfWidget.hpp"
 
+#include <cmath>
+
 // ------------------------------------------------------
 // use namespace
 
