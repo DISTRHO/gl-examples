@@ -116,23 +116,22 @@ protected:
 
     void onResize(const ResizeEvent& ev) override
     {
-        const int width  = ev.size.getWidth();
-        const int height = ev.size.getHeight();
+        const uint width  = ev.size.getWidth();
+        const uint height = ev.size.getHeight();
 
         // full bg
-        bgFull = Rectangle<int>(0, 0, width, height);
+        bgFull = Rectangle<uint>(0, 0, width, height);
 
         // small bg, centered 2/3 size
-        bgSmall = Rectangle<int>(width/6, height/6, width*2/3, height*2/3);
+        bgSmall = Rectangle<uint>(width/6, height/6, width*2/3, height*2/3);
     }
 
     char cur;
     bool reverse;
     int r, g, b;
 
-    Rectangle<int> bgFull, bgSmall;
+    Rectangle<uint> bgFull, bgSmall;
 };
-
 
 // ------------------------------------------------------
 
