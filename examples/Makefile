@@ -71,6 +71,9 @@ text: text.cpp widgets/ExampleTextWidget.hpp ../dpf/dgl/*
 cairo: cairo.cpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(shell pkg-config --cflags --libs cairo) $(LINK_FLAGS) -o $@
 
+file-browser: file-browser.cpp ../dpf/dgl/* ../dpf/dgl/src/sofd/*
+	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
+
 ntk: ntk.cpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) -I../dpf/distrho -Intk_res $(shell pkg-config --cflags --libs ntk_images ntk liblo jack) $(LINK_FLAGS) -o $@
 
