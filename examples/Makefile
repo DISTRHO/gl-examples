@@ -16,9 +16,9 @@ WINDRES ?= windres
 # --------------------------------------------------------------
 
 ifeq ($(WIN32),true)
-TARGETS = app.exe color.exe demo.exe images.exe nanovg.exe rectangles.exe shapes.exe text.exe
+TARGETS = app.exe color.exe demo.exe demo-multi images.exe nanovg.exe rectangles.exe shapes.exe text.exe
 else
-TARGETS = app color demo images nanovg nanovg2 rectangles shapes text
+TARGETS = app color demo demo-multi images nanovg nanovg2 rectangles shapes text
 endif
 
 # --------------------------------------------------------------
@@ -46,6 +46,9 @@ color: color.cpp widgets/ExampleColorWidget.hpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
 demo: demo.cpp widgets/* ../dpf/dgl/*
+	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
+
+demo-multi: demo-multi.cpp widgets/* ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
 images: images.cpp widgets/ExampleImagesWidget.hpp images_res/* ../dpf/dgl/*

@@ -12,6 +12,7 @@
 examples/app
 examples/color
 examples/demo
+examples/demo-multi
 examples/file-browser
 examples/images
 examples/nanovg
