@@ -55,7 +55,7 @@ public:
         {
             char file[128];
             std::snprintf(file, 128, "./nanovg_res/images/image%d.jpg", i+1);
-            fImages[i] = createImage(file);
+            fImages[i] = createImage(file, 0);
 
             if (fImages[i] == nullptr)
             {

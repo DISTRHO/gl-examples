@@ -21,12 +21,12 @@
 // DGL Stuff
 
 #include "NanoVG.hpp"
-#include "../../dpf/distrho/extra/d_string.hpp"
+#include "../../dpf/distrho/extra/String.hpp"
 
 // ------------------------------------------------------
 // use namespace
 
-using DISTRHO::d_string;
+using DISTRHO::String;
 using DGL::IdleCallback;
 using DGL::NanoVG;
 using DGL::NanoWidget;
@@ -222,8 +222,8 @@ private:
     int fHead;
     float fValues[kHistoryCount];
 
-    const int fStyle;
-    const d_string fName;
+    const int    fStyle;
+    const String fName;
 
     double prevt;
 

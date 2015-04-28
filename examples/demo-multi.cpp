@@ -66,7 +66,7 @@ public:
     {
         setResizable(false);
         setSize(fWidget.getSize());
-        setTitle(d_string("transient #") + d_string(++gWindowCount));
+        setTitle(String("transient #") + String(++gWindowCount));
         show();
     }
 
