@@ -55,18 +55,18 @@ public:
         {
             char file[128];
             std::snprintf(file, 128, "./nanovg_res/images/image%d.jpg", i+1);
-            fImages[i] = createImage(file, 0);
+            fImages[i] = createImageFromFile(file, 0);
 
-            if (fImages[i] == nullptr)
+            if (! fImages[i].isValid())
             {
                 d_stdout("Could not load %s.", file);
                 return;
             }
         }
 
-        fFontIcons  = createFont("icons", "./nanovg_res/entypo.ttf");
-        fFontNormal = createFont("sans", "./nanovg_res/Roboto-Regular.ttf");
-        fFontBold   = createFont("sans-bold", "./nanovg_res/Roboto-Bold.ttf");
+        fFontIcons  = createFontFromFile("icons", "./nanovg_res/entypo.ttf");
+        fFontNormal = createFontFromFile("sans", "./nanovg_res/Roboto-Regular.ttf");
+        fFontBold   = createFontFromFile("sans-bold", "./nanovg_res/Roboto-Bold.ttf");
     }
 
 protected:
@@ -123,7 +123,7 @@ protected:
 
 private:
     FontId fFontNormal, fFontBold, fFontIcons;
-    ScopedPointer<NanoImage> fImages[12];
+    NanoImage fImages[12];
 
     void drawEyes(float x, float y, float w, float h, float mx, float my, float t)
     {

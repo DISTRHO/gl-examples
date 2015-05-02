@@ -1,6 +1,6 @@
 /*
  * DISTRHO Plugin Framework (DPF)
- * Copyright (C) 2012-2014 Filipe Coelho <falktx@falktx.com>
+ * Copyright (C) 2012-2015 Filipe Coelho <falktx@falktx.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any purpose with
  * or without fee is hereby granted, provided that the above copyright notice and this
@@ -14,56 +14,49 @@
  * CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
  */
 
-#ifndef EXAMPLE_TEXT_WIDGET_HPP_INCLUDED
-#define EXAMPLE_TEXT_WIDGET_HPP_INCLUDED
-
 // ------------------------------------------------------
 // DGL Stuff
 
 #include "NanoVG.hpp"
+#include "StandaloneWindow.hpp"
 
 // ------------------------------------------------------
 // use namespace
 
 using DGL::NanoWidget;
+using DGL::StandaloneWindow;
 using DGL::Window;
 
 // ------------------------------------------------------
-// our widget
+// Test
 
-class ExampleTextWidget : public NanoWidget
+class TestWidget : public NanoWidget
 {
 public:
-    ExampleTextWidget(Window& parent)
-        : NanoWidget(parent),
-          fFont(createFontFromFile("sans", "./nanovg_res/Roboto-Regular.ttf"))
+    TestWidget(Window& parent)
+        : NanoWidget(parent)
     {
-        setSize(500, 300);
     }
 
 protected:
     void onNanoDisplay() override
     {
-        const int width  = getWidth();
-        const int height = getHeight();
-
-        fontSize(40.0f);
-        textAlign(Align(ALIGN_CENTER|ALIGN_MIDDLE));
-        textLineHeight(20.0f);
-
-        beginPath();
-        fillColor(220,220,220,255);
-        roundedRect(10, height/4+10, width-20, height/2-20, 3);
-        fill();
-
-        fillColor(0,200,0,220);
-        textBox(10, height/2, width-20, "Hello World!", nullptr);
     }
-
-private:
-    FontId fFont;
 };
 
 // ------------------------------------------------------
+// main entry point
 
-#endif // EXAMPLE_TEXT_WIDGET_HPP_INCLUDED
+int main()
+{
+    StandaloneWindow win;
+    TestWidget w(win);
+
+    win.setSize(500, 500);
+    win.setTitle("Blendish");
+    win.exec();
+
+    return 0;
+}
+
+// ------------------------------------------------------

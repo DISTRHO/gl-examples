@@ -18,7 +18,7 @@ WINDRES ?= windres
 ifeq ($(WIN32),true)
 TARGETS = app.exe color.exe demo.exe demo-multi images.exe nanovg.exe rectangles.exe shapes.exe text.exe
 else
-TARGETS = app color demo demo-multi images nanovg nanovg2 rectangles shapes text
+TARGETS = app blendish color demo demo-multi images nanovg nanovg2 rectangles shapes text
 endif
 
 # --------------------------------------------------------------
@@ -40,6 +40,9 @@ debug:
 # --------------------------------------------------------------
 
 app: app.cpp ../dpf/dgl/*
+	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
+
+blendish: blendish.cpp ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
 color: color.cpp widgets/ExampleColorWidget.hpp ../dpf/dgl/*

@@ -118,7 +118,7 @@ public:
 
         std::memset(fValues, 0, sizeof(float)*kHistoryCount);
 
-        createFont("sans", "./nanovg_res/Roboto-Regular.ttf");
+        createFontFromFile("sans", "./nanovg_res/Roboto-Regular.ttf");
 
         prevt = gTime.getTime();
     }

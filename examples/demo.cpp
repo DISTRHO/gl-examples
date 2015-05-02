@@ -62,7 +62,7 @@ public:
           curHover(-1)
     {
         // for text
-        font = nvg.createFont("sans", "./nanovg_res/Roboto-Regular.ttf");
+        font = nvg.createFontFromFile("sans", "./nanovg_res/Roboto-Regular.ttf");
 
         using namespace DemoArtwork;
         img1.loadFromMemory(ico1Data, ico1Width, ico1Height, GL_BGR);
