@@ -18,14 +18,138 @@
 // DGL Stuff
 
 #include "NanoVG.hpp"
+#include "Widget.hpp"
 #include "StandaloneWindow.hpp"
+
+#include "extra/ScopedPointer.hpp"
+
+#include "src/nanovg/nanovg.h"
+#include "src/oui-blendish/blendish.h"
 
 // ------------------------------------------------------
 // use namespace
 
-using DGL::NanoWidget;
-using DGL::StandaloneWindow;
-using DGL::Window;
+USE_NAMESPACE_DISTRHO;
+USE_NAMESPACE_DGL;
+
+// ------------------------------------------------------
+// Test
+
+class BlenderOption : public NanoWidget
+{
+public:
+    BlenderOption(NanoWidget* groupWidget)
+        : NanoWidget(groupWidget),
+          state(BND_DEFAULT),
+          area(10, 10, 200, BND_WIDGET_HEIGHT) {}
+
+protected:
+    bool onMouse(const MouseEvent& e)
+    {
+        if (! e.press)
+            return false;
+        if (! area.contains(e.pos))
+            return false;
+
+        if (state == BND_ACTIVE)
+            state = BND_HOVER;
+        else
+            state = BND_ACTIVE;
+
+        repaint();
+        return true;
+    }
+
+    bool onMotion(const MotionEvent& e)
+    {
+        if (! area.contains(e.pos))
+        {
+            if (state == BND_HOVER)
+            {
+                state = BND_DEFAULT;
+                repaint();
+                return true;
+            }
+
+            return false;
+        }
+
+        if (state == BND_DEFAULT)
+        {
+            state = BND_HOVER;
+            repaint();
+        }
+
+        return true;
+    }
+
+    void onNanoDisplay() override
+    {
+        bndOptionButton(getContext(), 10, 10, 200, BND_WIDGET_HEIGHT, state, "checkbox whoohoo!");
+    }
+
+private:
+    BNDwidgetState state;
+    Rectangle<int> area;
+};
+
+class BlenderRadioBox : public NanoWidget
+{
+public:
+    BlenderRadioBox(NanoWidget* groupWidget)
+        : NanoWidget(groupWidget),
+          state(BND_DEFAULT),
+          area(10, 40, 200, BND_WIDGET_HEIGHT) {}
+
+protected:
+    bool onMouse(const MouseEvent& e)
+    {
+        if (! e.press)
+            return false;
+        if (! area.contains(e.pos))
+            return false;
+
+        if (state == BND_ACTIVE)
+            state = BND_HOVER;
+        else
+            state = BND_ACTIVE;
+
+        repaint();
+        return true;
+    }
+
+    bool onMotion(const MotionEvent& e)
+    {
+        if (! area.contains(e.pos))
+        {
+            if (state == BND_HOVER)
+            {
+                state = BND_DEFAULT;
+                repaint();
+                return true;
+            }
+
+            return false;
+        }
+
+        if (state == BND_DEFAULT)
+        {
+            state = BND_HOVER;
+            repaint();
+        }
+
+        return true;
+    }
+
+    void onNanoDisplay() override
+    {
+        bndRadioButton(getContext(), 10, 40, 200, BND_WIDGET_HEIGHT, 0, state, BND_ICON_NONE, "radio blender style yeah");
+    }
+
+private:
+    BNDwidgetState state;
+    Rectangle<int> area;
+};
 
 // ------------------------------------------------------
 // Test
@@ -34,14 +158,26 @@ class TestWidget : public NanoWidget
 {
 public:
     TestWidget(Window& parent)
-        : NanoWidget(parent)
+        : NanoWidget(parent, NanoVG::CREATE_ANTIALIAS|NanoVG::CREATE_STENCIL_STROKES),
+          opt(this),
+          rb(this)
     {
+        NVGcontext* const context(getContext());
+
+        bndSetFont(nvgCreateFont(context, "system", "./blendish_res/DejaVuSans.ttf"));
+        bndSetIconImage(nvgCreateImage(context, "./blendish_res/blender_icons16.png", 0));
     }
 
 protected:
     void onNanoDisplay() override
     {
+        glClearColor(0.3f, 0.3f, 0.32f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT|GL_STENCIL_BUFFER_BIT);
     }
+
+private:
+    BlenderOption opt;
+    BlenderRadioBox rb;
 };
 
 // ------------------------------------------------------

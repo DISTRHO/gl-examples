@@ -8,7 +8,7 @@ include ../dpf/dgl/Makefile.mk
 
 # --------------------------------------------------------------
 
-BUILD_CXX_FLAGS += -I../dpf/dgl
+BUILD_CXX_FLAGS += -I../dpf/distrho -I../dpf/dgl
 LINK_FLAGS      += -L../dpf -ldgl $(DGL_LIBS)
 
 WINDRES ?= windres
@@ -16,9 +16,10 @@ WINDRES ?= windres
 # --------------------------------------------------------------
 
 ifeq ($(WIN32),true)
-TARGETS = app.exe color.exe demo.exe demo-multi images.exe nanovg.exe rectangles.exe shapes.exe text.exe
+TARGETS = app.exe color.exe demo.exe demo-multi demo-subwidgets,exe images.exe nanovg.exe rectangles.exe shapes.exe text.exe
 else
-TARGETS = app blendish color demo demo-multi images nanovg nanovg2 rectangles shapes text
+TARGETS = app blendish color demo demo-multi demo-subwidgets images nanovg nanovg2 rectangles shapes text
+# TARGETS = blendish demo-subwidgets
 endif
 
 # --------------------------------------------------------------
@@ -52,6 +53,9 @@ demo: demo.cpp widgets/* ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
 demo-multi: demo-multi.cpp widgets/* ../dpf/dgl/*
+	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
+
+demo-subwidgets: demo-subwidgets.cpp widgets/* ../dpf/dgl/*
 	$(CXX) $< $(BUILD_CXX_FLAGS) $(LINK_FLAGS) -o $@
 
 images: images.cpp widgets/ExampleImagesWidget.hpp images_res/* ../dpf/dgl/*

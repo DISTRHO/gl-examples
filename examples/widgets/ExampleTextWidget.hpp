@@ -41,6 +41,13 @@ public:
         setSize(500, 300);
     }
 
+    ExampleTextWidget(Widget* groupWidget)
+        : NanoWidget(groupWidget),
+          fFont(createFontFromFile("sans", "./nanovg_res/Roboto-Regular.ttf"))
+    {
+        setSize(500, 300);
+    }
+
 protected:
     void onNanoDisplay() override
     {

@@ -49,6 +49,17 @@ public:
         parent.addIdleCallback(this);
     }
 
+    ExampleColorWidget(Widget* groupWidget)
+        : Widget(groupWidget),
+          cur('r'),
+          reverse(false),
+          r(0), g(0), b(0)
+    {
+        setSize(300, 300);
+
+        groupWidget->getParentWindow().addIdleCallback(this);
+    }
+
 protected:
     void idleCallback() noexcept override
     {

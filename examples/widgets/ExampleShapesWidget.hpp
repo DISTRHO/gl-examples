@@ -44,6 +44,12 @@ public:
         setSize(300, 300);
     }
 
+    ExampleShapesWidget(Widget* groupWidget)
+        : Widget(groupWidget)
+    {
+        setSize(300, 300);
+    }
+
 protected:
     void onDisplay() override
     {

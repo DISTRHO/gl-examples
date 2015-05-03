@@ -45,6 +45,15 @@ public:
             fClicked[i] = false;
     }
 
+    ExampleRectanglesWidget(Widget* groupWidget)
+        : Widget(groupWidget)
+    {
+        setSize(300, 300);
+
+        for (int i=0; i<9; ++i)
+            fClicked[i] = false;
+    }
+
 protected:
     void onDisplay() override
     {
