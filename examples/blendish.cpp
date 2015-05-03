@@ -22,6 +22,7 @@
 #include "StandaloneWindow.hpp"
 
 #include "extra/ScopedPointer.hpp"
+#include "extra/String.hpp"
 
 #include "src/nanovg/nanovg.h"
 #include "src/oui-blendish/blendish.h"
@@ -48,6 +49,14 @@ public:
         : NanoWidget(groupWidget),
           fState(kStateDefault)
     {
+        NVGcontext* const context(getContext());
+
+        if (nvgFindFont(context, "__dpf_blendish__") < 0)
+        {
+            bndSetFont(nvgCreateFont(context, "__dpf_blendish__", "./blendish_res/DejaVuSans.ttf"));
+            bndSetIconImage(nvgCreateImage(context, "./blendish_res/blender_icons16.png", 0));
+        }
+
         setSize(250, BND_WIDGET_HEIGHT);
     }
 
@@ -107,15 +116,62 @@ class BlendishLabel : public BlendishCommon
 {
 public:
     BlendishLabel(NanoWidget* groupWidget)
-        : BlendishCommon(groupWidget) {}
+        : BlendishCommon(groupWidget),
+          fIconId(-1),
+          fText()
+    {
+        setText("this is a label");
+        //_updateBounds();
+    }
+
+    int getIconId() const noexcept
+    {
+        return fIconId;
+    }
+
+    void setIconId(int iconId) noexcept
+    {
+        if (fIconId == iconId)
+            return;
+
+        fIconId = iconId;
+        _updateBounds();
+        repaint();
+    }
+
+    const char* getText() const noexcept
+    {
+        return fText;
+    }
+
+    void setText(const char* text) noexcept
+    {
+        if (fText == text)
+            return;
+
+        fText = text;
+        _updateBounds();
+        repaint();
+    }
 
 protected:
     void onNanoDisplay() override
     {
         bndLabel(getContext(),
                  getAbsoluteX(), getAbsoluteY(), getWidth(), getHeight(),
-                 BND_ICON_HELP,
-                 "this is a label [help]");
+                 fIconId, fText);
+    }
+
+private:
+    int    fIconId;
+    String fText;
+
+    void _updateBounds()
+    {
+        const float width  = bndLabelWidth (getContext(), fIconId, fText);
+        const float height = bndLabelHeight(getContext(), fIconId, fText, width);
+
+        setSize(width, height);
     }
 };
 
@@ -271,11 +327,6 @@ public:
           w7(this, true),
           w7b(this, false)
     {
-        NVGcontext* const context(getContext());
-
-        bndSetFont(nvgCreateFont(context, "system", "./blendish_res/DejaVuSans.ttf"));
-        bndSetIconImage(nvgCreateImage(context, "./blendish_res/blender_icons16.png", 0));
-
         w0.setAbsolutePos(10, 10+25*0);
         w1.setAbsolutePos(10, 10+25*1);
         w2.setAbsolutePos(10, 10+25*2);
