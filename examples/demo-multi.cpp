@@ -1,6 +1,6 @@
 /*
  * DISTRHO Plugin Framework (DPF)
- * Copyright (C) 2012-2014 Filipe Coelho <falktx@falktx.com>
+ * Copyright (C) 2012-2015 Filipe Coelho <falktx@falktx.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any purpose with
  * or without fee is hereby granted, provided that the above copyright notice and this
@@ -17,7 +17,6 @@
 // ------------------------------------------------------
 // DGL Stuff
 
-#include "ImageButton.hpp"
 #include "StandaloneWindow.hpp"
 #include "widgets/ExampleColorWidget.hpp"
 #include "widgets/ExampleImagesWidget.hpp"
@@ -33,14 +32,6 @@
 #include "images_res/CatPics.cpp"
 
 // ------------------------------------------------------
-// use namespace
-
-using DGL::App;
-using DGL::ImageButton;
-using DGL::Line;
-using DGL::Size;
-
-// ------------------------------------------------------
 // Single Widget Window
 
 static int gWindowCount = 0;
@@ -49,7 +40,7 @@ template<class WIG>
 class SingleWidgetWindow : public Window
 {
 public:
-    SingleWidgetWindow(App& app)
+    SingleWidgetWindow(Application& app)
         : Window(app),
           fWidget(*this),
           fIsMain(true)
@@ -59,7 +50,7 @@ public:
         show();
     }
 
-    SingleWidgetWindow(App& app, Window& parent)
+    SingleWidgetWindow(Application& app, Window& parent)
         : Window(app, parent),
           fWidget(*this),
           fIsMain(false)
@@ -95,7 +86,7 @@ private:
 
 int main()
 {
-    App app;
+    Application app;
     SingleWidgetWindow<ExampleColorWidget> wColor(app);
     SingleWidgetWindow<ExampleImagesWidget> wImages(app, wColor);
     SingleWidgetWindow<ExampleRectanglesWidget> wRects(app, wColor);

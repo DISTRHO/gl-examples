@@ -1,6 +1,6 @@
 /*
  * DISTRHO Plugin Framework (DPF)
- * Copyright (C) 2012-2014 Filipe Coelho <falktx@falktx.com>
+ * Copyright (C) 2012-2015 Filipe Coelho <falktx@falktx.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any purpose with
  * or without fee is hereby granted, provided that the above copyright notice and this
@@ -28,15 +28,6 @@
 // Images
 
 #include "../images_res/CatPics.hpp"
-
-// ------------------------------------------------------
-// use namespace
-
-using DGL::IdleCallback;
-using DGL::Image;
-using DGL::Rectangle;
-using DGL::Widget;
-using DGL::Window;
 
 // ------------------------------------------------------
 // our widget

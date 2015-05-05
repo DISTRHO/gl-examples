@@ -1,6 +1,6 @@
 /*
  * DISTRHO Plugin Framework (DPF)
- * Copyright (C) 2012-2014 Filipe Coelho <falktx@falktx.com>
+ * Copyright (C) 2012-2015 Filipe Coelho <falktx@falktx.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any purpose with
  * or without fee is hereby granted, provided that the above copyright notice and this
@@ -24,11 +24,6 @@
 
 #include "widgets/NanoPerfWidget.hpp"
 #include "nanovg_res/demo.h"
-
-// ------------------------------------------------------
-// use namespace
-
-using namespace DGL;
 
 // ------------------------------------------------------
 // NanoVG Example Widget
@@ -98,7 +93,7 @@ protected:
 
         switch (ev.key)
         {
-        case CHAR_ESCAPE:
+        case kCharEscape:
             getParentApp().quit();
             break;
         case ' ':
@@ -137,7 +132,7 @@ private:
 class NanoExampleWindow : public Window
 {
 public:
-    NanoExampleWindow(App& app)
+    NanoExampleWindow(Application& app)
         : Window(app),
           fDemo(*this),
           fPerf(*this, NanoPerfWidget::RENDER_FPS, "Frame Time")
@@ -168,7 +163,7 @@ private:
 
 int main()
 {
-    App app;
+    Application app;
     NanoExampleWindow win(app);
 
     win.show();
