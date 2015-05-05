@@ -17,8 +17,7 @@
 // ------------------------------------------------------
 // DGL Stuff
 
-#include "NanoVG.hpp"
-#include "Widget.hpp"
+#include "NanoWidgets.hpp"
 #include "StandaloneWindow.hpp"
 
 #include "extra/ScopedPointer.hpp"
@@ -49,13 +48,14 @@ public:
         : NanoWidget(groupWidget),
           fState(kStateDefault)
     {
+        /*
         NVGcontext* const context(getContext());
 
         if (nvgFindFont(context, "__dpf_blendish__") < 0)
         {
             bndSetFont(nvgCreateFont(context, "__dpf_blendish__", "./blendish_res/DejaVuSans.ttf"));
             bndSetIconImage(nvgCreateImage(context, "./blendish_res/blender_icons16.png", 0));
-        }
+        }*/
 
         setSize(250, BND_WIDGET_HEIGHT);
     }
@@ -317,8 +317,8 @@ class TestWidget : public NanoWidget
 public:
     TestWidget(Window& parent)
         : NanoWidget(parent, NanoVG::CREATE_ANTIALIAS|NanoVG::CREATE_STENCIL_STROKES),
+          w1_R(this, "this is a real button", BND_ICON_ALIGN),
           w0(this),
-          w1(this),
           w2(this),
           w3(this),
           w4(this),
@@ -327,8 +327,8 @@ public:
           w7(this, true),
           w7b(this, false)
     {
+        w1_R.setAbsolutePos(10, 10+25*1);
         w0.setAbsolutePos(10, 10+25*0);
-        w1.setAbsolutePos(10, 10+25*1);
         w2.setAbsolutePos(10, 10+25*2);
         w3.setAbsolutePos(10, 10+25*3);
         w4.setAbsolutePos(10, 10+25*4);
@@ -349,8 +349,8 @@ protected:
     }
 
 private:
+    BlendishButton w1_R;
     BlendishLabel w0;
-    BlendishToolButton w1;
     BlendishPushButton w2;
     BlendishCheckbox w3;
     BlendishComboBox w4;
