@@ -42,22 +42,12 @@ class SingleWidgetWindow : public Window
 public:
     SingleWidgetWindow(Application& app)
         : Window(app),
-          fWidget(*this),
-          fIsMain(true)
+          fWidget(*this)
     {
-        setSize(fWidget.getSize());
-        setTitle("demo-multi");
-        show();
-    }
+        const String title = "demo-multi-" + String(++gWindowCount);
 
-    SingleWidgetWindow(Application& app, Window& parent)
-        : Window(app, parent),
-          fWidget(*this),
-          fIsMain(false)
-    {
-        setResizable(false);
         setSize(fWidget.getSize());
-        setTitle(String("transient #") + String(++gWindowCount));
+        setTitle(title);
         show();
     }
 
@@ -72,13 +62,12 @@ protected:
     {
         Window::onClose();
 
-        if (fIsMain)
+        if (--gWindowCount == 0)
             getApp().quit();
     }
 
 private:
     WIG fWidget;
-    bool fIsMain;
 };
 
 // ------------------------------------------------------
@@ -88,10 +77,10 @@ int main()
 {
     Application app;
     SingleWidgetWindow<ExampleColorWidget> wColor(app);
-    SingleWidgetWindow<ExampleImagesWidget> wImages(app, wColor);
-    SingleWidgetWindow<ExampleRectanglesWidget> wRects(app, wColor);
-    SingleWidgetWindow<ExampleShapesWidget> wShapes(app, wColor);
-    SingleWidgetWindow<ExampleTextWidget> wText(app, wColor);
+    SingleWidgetWindow<ExampleImagesWidget> wImages(app);
+    SingleWidgetWindow<ExampleRectanglesWidget> wRects(app);
+    SingleWidgetWindow<ExampleShapesWidget> wShapes(app);
+    SingleWidgetWindow<ExampleTextWidget> wText(app);
 
     app.exec();
 
