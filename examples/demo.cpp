@@ -1,6 +1,6 @@
 /*
  * DISTRHO Plugin Framework (DPF)
- * Copyright (C) 2012-2015 Filipe Coelho <falktx@falktx.com>
+ * Copyright (C) 2012-2018 Filipe Coelho <falktx@falktx.com>
  *
  * Permission to use, copy, modify, and/or distribute this software for any purpose with
  * or without fee is hereby granted, provided that the above copyright notice and this
@@ -319,6 +319,8 @@ class DemoWindow : public Window,
                    public LeftSideWidget::Callback
 {
 public:
+    static const int kSidebarWidth = 81;
+
     DemoWindow(Application& app)
         : Window(app),
           wColor(*this),
@@ -338,11 +340,11 @@ public:
         wText.hide();
         //wPerf.hide();
 
-        wColor.setAbsoluteX(81);
-        wImages.setAbsoluteX(81);
-        wRects.setAbsoluteX(81);
-        wShapes.setAbsoluteX(81);
-        wText.setAbsoluteX(81);
+        wColor.setAbsoluteX(kSidebarWidth);
+        wImages.setAbsoluteX(kSidebarWidth);
+        wRects.setAbsoluteX(kSidebarWidth);
+        wShapes.setAbsoluteX(kSidebarWidth);
+        wText.setAbsoluteX(kSidebarWidth);
         wLeft.setAbsolutePos(2, 2);
         wPerf.setAbsoluteY(5);
 
@@ -354,14 +356,17 @@ public:
 
     void onReshape(uint width, uint height) override
     {
-        Size<uint> size(width-81, height);
+        if (width < kSidebarWidth)
+            return;
+
+        Size<uint> size(width-kSidebarWidth, height);
         wColor.setSize(size);
         wImages.setSize(size);
         wRects.setSize(size);
         wShapes.setSize(size);
         wText.setSize(size);
 
-        wLeft.setSize(81-4, height-4);
+        wLeft.setSize(kSidebarWidth-4, height-4);
         //wRezHandle.setAbsoluteX(width-wRezHandle.getWidth());
         //wRezHandle.setAbsoluteY(height-wRezHandle.getHeight());
 
