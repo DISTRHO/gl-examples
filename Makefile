@@ -4,6 +4,8 @@
 # Created by falkTX
 #
 
+include dpf/Makefile.base.mk
+
 all: libs examples
 
 # --------------------------------------------------------------
