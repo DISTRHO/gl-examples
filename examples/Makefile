@@ -4,12 +4,12 @@
 # Created by falkTX
 #
 
-include ../dpf/dgl/Makefile.mk
+include ../dpf/Makefile.base.mk
 
 # --------------------------------------------------------------
 
 BUILD_CXX_FLAGS += -I../dpf/distrho -I../dpf/dgl
-LINK_FLAGS      += -L../dpf -ldgl $(DGL_LIBS)
+LINK_FLAGS      += -L../dpf/build -ldgl $(DGL_LIBS)
 
 WINDRES ?= windres
 
@@ -28,7 +28,7 @@ all: ../libdgl.a $(TARGETS)
 build: $(TARGETS)
 
 clean:
-	rm -f $(TARGETS) win32/distrho.o
+	rm -f $(TARGETS) $(TARGETS:=.d) win32/distrho.o
 
 debug:
 	$(MAKE) DEBUG=true
